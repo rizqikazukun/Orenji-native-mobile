@@ -13,8 +13,16 @@ const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: 'tomato',
-    secondary: 'yellow',
+    tmBlack: '#3F3A3A',
+    gray10: '#EFEFEF',
+    gray20: '#B6B6B6',
+    gray40: '#666666',
+    whiteT70: '#f8f8f8',
+    whiteT80: '#FFFFFF80',
+  },
+  padding: {
+    containerHorizontal: 12,
+    viewPadding: 5,
   },
 };
 
