@@ -56,6 +56,7 @@ export default function Home() {
 
   return (
     <SafeAreaView>
+      <StatusBar backgroundColor="#c40900ff" />
       <ScrollView>
 
         <View
@@ -185,26 +186,26 @@ export default function Home() {
 
           <ScrollView showsVerticalScrollIndicator={false}>
             {[{
-                image: require('../assets/images/f-pizza.jpg'),
-                title: 'Tomato Pizza',
-                category: 'salted',
-                rating: 4.7,
-              }, {
-                image: require('../assets/images/f-burger.jpeg'),
-                title: 'Beef Burger',
-                category: 'salted',
-                rating: 4.7,
-              }, {
-                image: require('../assets/images/f-spageti.jpg'),
-                title: 'Spageti',
-                category: 'salted',
-                rating: 4.7,
-              }, {
-                image: require('../assets/images/dummy.jpeg'),
-                title: 'Telur Asin Bali',
-                category: 'salted',
-                rating: 4.7,
-              }].map((card, index) => {
+              image: require('../assets/images/f-pizza.jpg'),
+              title: 'Tomato Pizza',
+              category: 'salted',
+              rating: 4.7,
+            }, {
+              image: require('../assets/images/f-burger.jpeg'),
+              title: 'Beef Burger',
+              category: 'salted',
+              rating: 4.7,
+            }, {
+              image: require('../assets/images/f-spageti.jpg'),
+              title: 'Spageti',
+              category: 'salted',
+              rating: 4.7,
+            }, {
+              image: require('../assets/images/dummy.jpeg'),
+              title: 'Telur Asin Bali',
+              category: 'salted',
+              rating: 4.7,
+            }].map((card, index) => {
               return (
                 <HeatCard
                   key={index}
