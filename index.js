@@ -13,11 +13,12 @@ const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
+    tmRed: '#c70800',
     tmBlack: '#3F3A3A',
     gray10: '#EFEFEF',
     gray20: '#B6B6B6',
     gray40: '#666666',
-    whiteT70: '#f8f8f8',
+    whiteT70: '#f5f5f5',
     whiteT80: '#FFFFFF80',
   },
   padding: {
