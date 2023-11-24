@@ -28,7 +28,15 @@ export default function PopularCard({title, imageSource}) {
           paddingVertical: 30,
           paddingHorizontal: 20,
         }}>
-        <Text style={{color: 'white', fontWeight: 600, fontSize: 20}}>
+        <Text
+          style={{
+            color: 'white',
+            fontWeight: 600,
+            fontSize: 20,
+            textShadowColor: 'rgba(0, 0, 0, 0.75)',
+            textShadowOffset: {width: -1, height: 1},
+            textShadowRadius: 10,
+          }}>
           {title}
         </Text>
       </View>
