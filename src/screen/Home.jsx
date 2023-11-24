@@ -57,7 +57,7 @@ export default function Home() {
   return (
     <SafeAreaView>
       <StatusBar backgroundColor="#c40900ff" />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
 
         <View
           style={{
