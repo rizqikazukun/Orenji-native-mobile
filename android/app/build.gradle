@@ -73,9 +73,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.tomato"
+    namespace "com.tmtrcp.tomatorecipe"
     defaultConfig {
-        applicationId "com.tomato"
+        applicationId "com.tmtrcp.tomatorecipe"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

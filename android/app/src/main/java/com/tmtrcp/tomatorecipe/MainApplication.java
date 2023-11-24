@@ -1,4 +1,4 @@
-package com.tomato;
+package com.tmtrcp.tomatorecipe;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
