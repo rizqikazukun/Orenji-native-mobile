@@ -10,8 +10,9 @@
  */
 
 import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Searchbar, useTheme } from 'react-native-paper';
 import {
-  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -24,7 +25,6 @@ import {
   Image,
 } from 'react-native';
 
-import { Searchbar, useTheme } from 'react-native-paper';
 import BagdeCategory from '../components/BagdeCategory';
 import HeatCard from '../components/cards/HeatCard';
 import PopularCard from '../components/cards/PopularCard';
@@ -55,7 +55,7 @@ export default function Home() {
   });
 
   return (
-    <SafeAreaView>
+    <SafeAreaView edges={['top', 'right', 'bottom', 'left']}>
       <StatusBar backgroundColor="#c40900ff" />
       <ScrollView showsVerticalScrollIndicator={false}>
 
