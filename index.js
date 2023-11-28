@@ -5,9 +5,10 @@
 import {AppRegistry} from 'react-native';
 import Home from './src/screen/Home';
 import {name as appName} from './app.json';
-
 import * as React from 'react';
 import {MD3LightTheme as DefaultTheme, PaperProvider} from 'react-native-paper';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const theme = {
   ...DefaultTheme,
@@ -27,11 +28,17 @@ const theme = {
   },
 };
 
+const Stack = createNativeStackNavigator();
+
 export default function Main() {
   return (
-    <PaperProvider theme={theme}>
-      <Home />
-    </PaperProvider>
+    <NavigationContainer>
+      <PaperProvider theme={theme}>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
+          <Stack.Screen name="Home" component={Home} />
+        </Stack.Navigator>
+      </PaperProvider>
+    </NavigationContainer>
   );
 }
 
