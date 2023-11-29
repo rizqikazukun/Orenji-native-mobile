@@ -9,6 +9,7 @@ import * as React from 'react';
 import {MD3LightTheme as DefaultTheme, PaperProvider} from 'react-native-paper';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import DetailRecipe from './src/screen/DetailRecipe';
 
 const theme = {
   ...DefaultTheme,
@@ -36,6 +37,7 @@ export default function Main() {
       <PaperProvider theme={theme}>
         <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="DetailRecipe" component={DetailRecipe} />
         </Stack.Navigator>
       </PaperProvider>
     </NavigationContainer>
