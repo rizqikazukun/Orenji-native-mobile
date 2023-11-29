@@ -14,10 +14,10 @@ import {
 
 import {useTheme} from 'react-native-paper';
 
-export default function PopularCard({title, imageSource}) {
+export default function PopularCard({title, source}) {
   return (
     <ImageBackground
-      source={imageSource}
+      source={{uri: source}}
       imageStyle={{borderRadius: 10, marginVertical: 12, marginHorizontal: 5}}>
       <View
         style={{
