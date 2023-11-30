@@ -32,6 +32,7 @@ import HeatCard from '../components/cards/HeatCard';
 import PopularCard from '../components/cards/PopularCard';
 import axios from 'axios';
 import { backendUrl } from '../config';
+import BottomNavbar from '../components/BottomNavbar';
 
 export default function Home({ navigation }) {
   const [search, setSearch] = React.useState('');
@@ -92,7 +93,7 @@ export default function Home({ navigation }) {
 
 
   return (
-    <SafeAreaView edges={['top', 'right', 'bottom', 'left']}>
+    <SafeAreaView edges={['top', 'right', 'bottom', 'left']} style={{ height: height - 30 }}>
       <StatusBar backgroundColor="#c40900ff" />
       {
         loading === true ?
@@ -100,121 +101,123 @@ export default function Home({ navigation }) {
             <Image source={require('../assets/images/logo-w-slogan.png')} style={{ width: 200, objectFit: 'contain' }} />
             <ActivityIndicator size="large" color={`${theme.colors.tmRed}`} />
           </View> :
-          <ScrollView showsVerticalScrollIndicator={false}>
 
-            <View
-              style={{
-                height: 220,
-                width: width,
-                position: 'absolute',
-              }}>
+          <View>
+            <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: 64 }}>
 
-              <ImageBackground
+              <View
                 style={{
-                  height: '100%',
-                }}
-                imageStyle={{
-                  borderBottomRightRadius: 20,
-                  borderBottomLeftRadius: 20,
-                }}
-                source={require('../assets/images/header.png')}>
+                  height: 220,
+                  width: width,
+                  position: 'absolute',
+                }}>
+
+                <ImageBackground
+                  style={{
+                    height: '100%',
+                  }}
+                  imageStyle={{
+                    borderBottomRightRadius: 20,
+                    borderBottomLeftRadius: 20,
+                  }}
+                  source={require('../assets/images/header.png')}>
+
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      paddingVertical: theme.padding.containerHorizontal,
+                      paddingHorizontal: 28,
+                    }}>
+
+                    <Image
+                      style={{ width: 160, objectFit: 'contain' }}
+                      source={require('../assets/images/logo-w-slogan.png')}
+                    />
+
+                  </View>
+                </ImageBackground>
+              </View>
+
+              <View style={styles.searchbar}>
+                <Searchbar
+                  iconColor={theme.colors.gray20}
+                  placeholderTextColor={theme.colors.gray20}
+                  placeholder="Search Pasta, Bread, etc"
+                  onChangeText={query => setSearch(query)}
+                  style={{ backgroundColor: '#fff' }}
+                />
+              </View>
+
+              {/* Popular Section */}
+              <View style={{ paddingHorizontal: theme.padding.containerHorizontal }}>
+                <View style={{ padding: 5 }}>
+                  <Text style={styles.h2_black}>Popular Recipes</Text>
+                  <Text style={styles.sub_h2}>Populer check</Text>
+                </View>
+
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                  style={{ display: 'flex', flexDirection: 'row' }}>
+                  {
+                    popularRecipes?.map((recipe, index) => (
+                      <TouchableWithoutFeedback key={index} onPress={() => navigation.navigate('DetailRecipe', recipe)}>
+                        <View>
+                          <PopularCard title={recipe.title} source={recipe.image} />
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ))
+                  }
+                </ScrollView>
+              </View>
+
+              {/* Category Section */}
+              <View style={{ paddingHorizontal: theme.padding.containerHorizontal }}>
+                <View style={{ padding: 5 }}>
+                  <Text style={styles.h2_black}>Category</Text>
+                </View>
 
                 <View
                   style={{
                     display: 'flex',
-                    flexDirection: 'column',
-                    paddingVertical: theme.padding.containerHorizontal,
-                    paddingHorizontal: 28,
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                    marginBottom: 20,
+                    marginTop: 15,
                   }}>
-
-                  <Image
-                    style={{ width: 160, objectFit: 'contain' }}
-                    source={require('../assets/images/logo-w-slogan.png')}
-                  />
-
+                  {
+                    [{
+                      icon: require('../assets/images/c-spicy.png'),
+                      title: 'Spicy',
+                    }, {
+                      icon: require('../assets/images/c-curry.png'),
+                      title: 'Curry',
+                    }, {
+                      icon: require('../assets/images/c-vegie.png'),
+                      title: 'Vegie',
+                    }, {
+                      icon: require('../assets/images/c-salty.png'),
+                      title: 'Salty',
+                    }].map((category, index) => (
+                      <BagdeCategory
+                        key={index}
+                        imageSource={category.icon}
+                        title={category.title}
+                      />
+                    ))
+                  }
                 </View>
-              </ImageBackground>
-            </View>
-
-            <View style={styles.searchbar}>
-              <Searchbar
-                iconColor={theme.colors.gray20}
-                placeholderTextColor={theme.colors.gray20}
-                placeholder="Search Pasta, Bread, etc"
-                onChangeText={query => setSearch(query)}
-                style={{ backgroundColor: '#fff' }}
-              />
-            </View>
-
-            {/* Popular Section */}
-            <View style={{ paddingHorizontal: theme.padding.containerHorizontal }}>
-              <View style={{ padding: 5 }}>
-                <Text style={styles.h2_black}>Popular Recipes</Text>
-                <Text style={styles.sub_h2}>Populer check</Text>
               </View>
 
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                style={{ display: 'flex', flexDirection: 'row' }}>
-                {
-                  popularRecipes?.map((recipe, index) => (
-                    <TouchableWithoutFeedback key={index} onPress={() => navigation.navigate('DetailRecipe', recipe)}>
-                      <View>
-                        <PopularCard title={recipe.title} source={recipe.image} />
-                      </View>
-                    </TouchableWithoutFeedback>
-                  ))
-                }
-              </ScrollView>
-            </View>
+              {/* Heat's Section */}
+              <View style={{ paddingHorizontal: theme.padding.containerHorizontal }}>
 
-            {/* Category Section */}
-            <View style={{ paddingHorizontal: theme.padding.containerHorizontal }}>
-              <View style={{ padding: 5 }}>
-                <Text style={styles.h2_black}>Category</Text>
-              </View>
+                <View style={{ padding: 5 }}>
+                  <Text style={styles.h2_black}>Heat's 🔥</Text>
+                  <Text style={styles.sub_h2}>Checkout this week heat's</Text>
+                </View>
 
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-evenly',
-                  marginBottom: 20,
-                  marginTop: 15,
-                }}>
-                {
-                  [{
-                    icon: require('../assets/images/c-spicy.png'),
-                    title: 'Spicy',
-                  }, {
-                    icon: require('../assets/images/c-curry.png'),
-                    title: 'Curry',
-                  }, {
-                    icon: require('../assets/images/c-vegie.png'),
-                    title: 'Vegie',
-                  }, {
-                    icon: require('../assets/images/c-salty.png'),
-                    title: 'Salty',
-                  }].map((category, index) => (
-                    <BagdeCategory
-                      key={index}
-                      imageSource={category.icon}
-                      title={category.title}
-                    />
-                  ))
-                }
-              </View>
-            </View>
-
-            {/* Heat's Section */}
-            <View style={{ paddingHorizontal: theme.padding.containerHorizontal }}>
-              <View style={{ padding: 5 }}>
-                <Text style={styles.h2_black}>Heat's 🔥</Text>
-                <Text style={styles.sub_h2}>Checkout this week heat's</Text>
-              </View>
-
-              <ScrollView showsVerticalScrollIndicator={false}>
                 {
                   popularRecipes?.map((recipe, index) => {
                     return (
@@ -229,12 +232,13 @@ export default function Home({ navigation }) {
                         </View>
                       </TouchableWithoutFeedback>
                     );
-                  })}
-              </ScrollView>
-            </View>
-
-          </ScrollView>
+                  })
+                }
+              </View>
+            </ScrollView>
+          </View>
       }
+      { loading ? null : <BottomNavbar navigation={navigation} /> }
     </SafeAreaView>
   );
 }
