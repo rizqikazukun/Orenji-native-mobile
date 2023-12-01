@@ -238,7 +238,7 @@ export default function Home({ navigation }) {
             </ScrollView>
           </View>
       }
-      { loading ? null : <BottomNavbar navigation={navigation} /> }
+      { loading ? null : <BottomNavbar navigation={navigation} screenName="Home"/> }
     </SafeAreaView>
   );
 }
