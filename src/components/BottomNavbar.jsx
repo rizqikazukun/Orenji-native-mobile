@@ -21,6 +21,7 @@ import {
   TouchableNativeFeedback,
   Button,
 } from 'react-native';
+import * as Icons from 'react-native-feather';
 
 const styles = StyleSheet.create({
   body: {
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function BottomNavbar({navigation}) {
+export default function BottomNavbar({navigation, screenName}) {
   const theme = useTheme();
   const [rippleOverflow, setRippleOverflow] = React.useState();
   const {height, width, scale, fontScale} = useWindowDimensions();
@@ -83,10 +84,58 @@ export default function BottomNavbar({navigation}) {
       <View style={styles.body}>
         <View style={styles.container}>
           {[
-            {title: 'Home', icon: '', link: 'Home'},
-            {title: 'Explore', icon: '', link: 'Home'},
-            {title: 'Recipe', icon: '', link: 'Home'},
-            {title: 'Profile', icon: '', link: 'Home'},
+            {
+              title: 'Home',
+              link: 'Home',
+              icon: (
+                <Icons.Home
+                  color={
+                    screenName === 'Home'
+                      ? theme.colors.tmRed
+                      : theme.colors.gray40
+                  }
+                />
+              ),
+            },
+            {
+              title: 'Explore',
+              link: 'Home',
+              icon: (
+                <Icons.Compass
+                  color={
+                    screenName === 'Explore'
+                      ? theme.colors.tmRed
+                      : theme.colors.gray40
+                  }
+                />
+              ),
+            },
+            {
+              title: 'Recipe',
+              link: 'Home',
+              icon: (
+                <Icons.Book
+                  color={
+                    screenName === 'Recipe'
+                      ? theme.colors.tmRed
+                      : theme.colors.gray40
+                  }
+                />
+              ),
+            },
+            {
+              title: 'Profile',
+              link: 'Home',
+              icon: (
+                <Icons.User
+                  color={
+                    screenName === 'Profile'
+                      ? theme.colors.tmRed
+                      : theme.colors.gray40
+                  }
+                />
+              ),
+            },
           ].map((item, index) => {
             return (
               <TouchableNativeFeedback
@@ -104,7 +153,7 @@ export default function BottomNavbar({navigation}) {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
-                  <Text>{item.title}</Text>
+                  <Text>{item.icon}</Text>
                 </View>
               </TouchableNativeFeedback>
             );
