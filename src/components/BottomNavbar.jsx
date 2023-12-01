@@ -51,42 +51,47 @@ const styles = StyleSheet.create({
   },
 });
 
+const CTA = ({width}) => {
+  return (
+    <View
+      style={{
+        position: 'absolute',
+        bottom: 64,
+        height: 40,
+        width: width,
+        backgroundColor: '#c40900ff',
+        paddingHorizontal: 10,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        alignContent: 'center',
+        flexDirection: 'row',
+        zIndex: 9999,
+      }}>
+      <Text style={{color: 'white', fontWeight: 600}}>
+        Sudah punya akun Tomato?
+      </Text>
+      <View style={{padding: 2, backgroundColor: 'white'}}>
+        <Text style={{color: '#c40900ff', fontWeight: 600}}>Masuk</Text>
+      </View>
+    </View>
+  );
+};
+
 export default function BottomNavbar({navigation, screenName}) {
   const theme = useTheme();
   const [rippleOverflow, setRippleOverflow] = React.useState();
   const {height, width, scale, fontScale} = useWindowDimensions();
+  const [login, setLogin] = React.useState(false);
 
   return (
     <>
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 64,
-          height: 40,
-          width: width,
-          backgroundColor: theme.colors.tmRed,
-          paddingHorizontal: 10,
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          alignContent: 'center',
-          flexDirection: 'row',
-          zIndex: 9999,
-        }}>
-        <Text style={{color: 'white', fontWeight: 600}}>
-          Sudah punya akun Tomato?
-        </Text>
-        <View style={{padding: 2, backgroundColor: 'white'}}>
-          <Text style={{color: theme.colors.tmRed, fontWeight: 600}}>
-            Masuk
-          </Text>
-        </View>
-      </View>
+      {login ? null : screenName !== 'Home' ? null : <CTA width={width} />}
       <View style={styles.body}>
         <View style={styles.container}>
           {[
             {
               title: 'Home',
-              link: 'Home',
+              link: 'HomeScreen',
               icon: (
                 <Icons.Home
                   color={
@@ -99,7 +104,7 @@ export default function BottomNavbar({navigation, screenName}) {
             },
             {
               title: 'Explore',
-              link: 'Home',
+              link: 'HomeScreen',
               icon: (
                 <Icons.Compass
                   color={
@@ -112,7 +117,7 @@ export default function BottomNavbar({navigation, screenName}) {
             },
             {
               title: 'Recipe',
-              link: 'Home',
+              link: 'HomeScreen',
               icon: (
                 <Icons.Book
                   color={
@@ -125,7 +130,7 @@ export default function BottomNavbar({navigation, screenName}) {
             },
             {
               title: 'Profile',
-              link: 'Home',
+              link: 'UserProfile',
               icon: (
                 <Icons.User
                   color={
