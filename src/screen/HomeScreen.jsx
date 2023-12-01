@@ -34,7 +34,7 @@ import axios from 'axios';
 import { backendUrl } from '../config';
 import BottomNavbar from '../components/BottomNavbar';
 
-export default function Home({ navigation }) {
+export default function HomeScreen({ navigation }) {
   const [search, setSearch] = React.useState('');
   const theme = useTheme();
   const { height, width, scale, fontScale } = useWindowDimensions();
@@ -91,9 +91,8 @@ export default function Home({ navigation }) {
     },
   });
 
-
   return (
-    <SafeAreaView edges={['top', 'right', 'bottom', 'left']} >
+    <SafeAreaView edges={['top', 'right', 'bottom', 'left']}>
       <StatusBar backgroundColor="#c40900ff" />
       {
         loading === true ?
