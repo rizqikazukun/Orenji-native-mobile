@@ -13,6 +13,7 @@ import DetailRecipe from './src/screen/DetailRecipe';
 
 const theme = {
   ...DefaultTheme,
+  version: 2,
   colors: {
     ...DefaultTheme.colors,
     tmRed: '#c70800',
