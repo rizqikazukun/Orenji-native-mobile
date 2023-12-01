@@ -93,7 +93,7 @@ export default function Home({ navigation }) {
 
 
   return (
-    <SafeAreaView edges={['top', 'right', 'bottom', 'left']} style={{ height: height - 30 }}>
+    <SafeAreaView edges={['top', 'right', 'bottom', 'left']} >
       <StatusBar backgroundColor="#c40900ff" />
       {
         loading === true ?
