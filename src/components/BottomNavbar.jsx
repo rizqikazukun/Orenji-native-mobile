@@ -51,13 +51,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const CTA = ({width}) => {
+const CTA = ({width, theme, navigation}) => {
   return (
     <View
       style={{
         position: 'absolute',
         bottom: 64,
-        height: 40,
+        height: 50,
         width: width,
         backgroundColor: '#c40900ff',
         paddingHorizontal: 10,
@@ -67,11 +67,29 @@ const CTA = ({width}) => {
         flexDirection: 'row',
         zIndex: 9999,
       }}>
-      <Text style={{color: 'white', fontWeight: 600}}>
+      <Text style={{color: 'white', fontFamily: 'Montserrat-Medium'}}>
         Sudah punya akun Tomato?
       </Text>
-      <View style={{padding: 2, backgroundColor: 'white'}}>
-        <Text style={{color: '#c40900ff', fontWeight: 600}}>Masuk</Text>
+      <View
+        style={{
+          backgroundColor: 'white',
+          height: 30,
+          width: 80,
+          borderRadius: 30,
+          justifyContent: 'center',
+          alignContent: 'center',
+        }}>
+        <TouchableNativeFeedback
+          onPress={() => navigation.navigate('UserLogin')}>
+          <Text
+            style={{
+              fontFamily: 'Montserrat-Bold',
+              textAlign: 'center',
+              color: theme.colors.tmRed,
+            }}>
+            Login
+          </Text>
+        </TouchableNativeFeedback>
       </View>
     </View>
   );
@@ -85,7 +103,9 @@ export default function BottomNavbar({navigation, screenName}) {
 
   return (
     <>
-      {login ? null : screenName !== 'Home' ? null : <CTA width={width} />}
+      {login ? null : screenName !== 'Home' ? null : (
+        <CTA width={width} theme={theme} navigation={navigation} />
+      )}
       <View style={styles.body}>
         <View style={styles.container}>
           {[
