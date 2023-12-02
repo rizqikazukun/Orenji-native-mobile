@@ -24,7 +24,12 @@ export default function BagdeCategory({title, imageSource}) {
           source={imageSource}
         />
       </View>
-      <Text style={{textAlign: 'center', color: theme.colors.tmBlack}}>
+      <Text
+        style={{
+          textAlign: 'center',
+          color: theme.colors.tmBlack,
+          fontFamily: 'Lato-Regular',
+        }}>
         {title}
       </Text>
     </View>

@@ -77,11 +77,14 @@ export default function UserLogin({navigation, route}) {
             label="Email"
             outlineColor="gray"
             inputMode="email"
-            theme={{roundness: 36}}
+            theme={{
+              roundness: 36,
+              fonts: {regular: {fontFamily: 'Lato-Regular'}},
+            }}
             left={<TextInput.Icon icon="account-outline" color="gray" />}
+            inputStyle={{fontFamily: 'Lato-Regular', fontSize: 14}}
             style={{
               backgroundColor: theme.colors.gray5,
-              fontFamily: 'Montserrat-Medium',
             }}
           />
 
@@ -91,11 +94,13 @@ export default function UserLogin({navigation, route}) {
             label="Password"
             secureTextEntry
             outlineColor="gray"
-            theme={{roundness: 36}}
+            theme={{
+              roundness: 36,
+              fonts: {regular: {fontFamily: 'Lato-Regular'}},
+            }}
             left={<TextInput.Icon icon="form-textbox-password" color="gray" />}
             style={{
               backgroundColor: theme.colors.gray5,
-              fontFamily: 'Montserrat-Medium',
             }}
           />
 

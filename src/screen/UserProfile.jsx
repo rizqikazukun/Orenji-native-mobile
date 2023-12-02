@@ -62,13 +62,13 @@ export default function ScreenTemplate({navigation, route}) {
             title="Login"
             navigation={navigation}
             navigationLink="UserLogin"
-            icon={<Icons.Users color="black" height={25} width={25} />}
+            icon={<Icons.Users color="black" height={18} width={18} />}
           />
           <ProfileLink
             title="Register"
             navigation={navigation}
             navigationLink="UserRegister"
-            icon={<Icons.UserPlus color="black" height={25} width={25} />}
+            icon={<Icons.UserPlus color="black" height={18} width={18} />}
           />
         </View>
         {/* Login */}

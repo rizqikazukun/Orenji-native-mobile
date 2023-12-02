@@ -40,15 +40,31 @@ export default function HeatCard({source, title, category, rating, style}) {
         source={{uri: source}}
       />
 
-      <View>
+      <View style={{gap: 4, justifyContent: 'center'}}>
         <Text
-          style={{fontSize: 16, fontWeight: 500, color: theme.colors.tmBlack}}>
+          style={{
+            fontSize: 14,
+            fontFamily: 'Lato-Bold',
+            color: theme.colors.tmBlack,
+          }}>
           {title}
         </Text>
-        <Text style={{fontSize: 12, color: theme.colors.gray40}}>
+        <Text
+          style={{
+            fontSize: 12,
+            color: theme.colors.gray40,
+            fontFamily: 'Lato-Regular',
+          }}>
           {category}
         </Text>
-        <Text style={{fontSize: 12, color: theme.colors.gray40}}>{rating}</Text>
+        <Text
+          style={{
+            fontSize: 12,
+            color: theme.colors.gray40,
+            fontFamily: 'Lato-Regular',
+          }}>
+          {`Rating : ${rating}`}
+        </Text>
       </View>
     </View>
   );

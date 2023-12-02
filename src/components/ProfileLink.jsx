@@ -32,13 +32,13 @@ export default function ProfileLink({navigation, navigationLink, title, icon}) {
     },
     textLink: {
       fontFamily: 'Montserrat-Medium',
-      fontSize: 20,
+      fontSize: 14,
       color: 'black',
     },
   });
 
   return (
-    <TouchableWithoutFeedback
+    <TouchableNativeFeedback
       onPress={() => navigation.navigate(navigationLink)}>
       <View style={styles.outerBody}>
         <View style={{flexDirection: 'row', gap: 20}}>
@@ -46,9 +46,9 @@ export default function ProfileLink({navigation, navigationLink, title, icon}) {
           <Text style={styles.textLink}>{title}</Text>
         </View>
         <View>
-          <Icons.ChevronRight color="black" height={30} width={30} />
+          <Icons.ChevronRight color="black" height={20} width={20} />
         </View>
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableNativeFeedback>
   );
 }

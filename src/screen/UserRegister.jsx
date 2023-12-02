@@ -88,7 +88,10 @@ export default function UserRegister({navigation, route}) {
             label="First Name"
             outlineColor="gray"
             inputMode="text"
-            theme={{roundness: 36}}
+            theme={{
+              roundness: 36,
+              fonts: {regular: {fontFamily: 'Lato-Regular'}},
+            }}
             left={<TextInput.Icon icon="rename-box" color="gray" />}
             style={{
               backgroundColor: theme.colors.gray5,
@@ -102,7 +105,10 @@ export default function UserRegister({navigation, route}) {
             label="Last Name"
             outlineColor="gray"
             inputMode="text"
-            theme={{roundness: 36}}
+            theme={{
+              roundness: 36,
+              fonts: {regular: {fontFamily: 'Lato-Regular'}},
+            }}
             left={<TextInput.Icon icon="rename-box" color="gray" />}
             style={{
               backgroundColor: theme.colors.gray5,
@@ -116,7 +122,10 @@ export default function UserRegister({navigation, route}) {
             label="Email"
             outlineColor="gray"
             inputMode="email"
-            theme={{roundness: 36}}
+            theme={{
+              roundness: 36,
+              fonts: {regular: {fontFamily: 'Lato-Regular'}},
+            }}
             left={<TextInput.Icon icon="account-outline" color="gray" />}
             style={{
               backgroundColor: theme.colors.gray5,

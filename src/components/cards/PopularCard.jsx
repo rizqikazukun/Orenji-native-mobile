@@ -18,21 +18,35 @@ export default function PopularCard({title, source}) {
   return (
     <ImageBackground
       source={{uri: source}}
-      imageStyle={{borderRadius: 10, marginVertical: 12, marginHorizontal: 5}}>
+      imageStyle={{
+        borderRadius: 10,
+        marginVertical: 12,
+        marginHorizontal: 5,
+      }}
+      style={{
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
+        elevation: 4,
+      }}>
       <View
         style={{
-          height: 180,
-          width: 260,
+          width: 160,
+          height: 240,
           display: 'flex',
           justifyContent: 'flex-end',
-          paddingVertical: 30,
-          paddingHorizontal: 20,
+          paddingVertical: 24,
+          paddingHorizontal: 16,
         }}>
         <Text
           style={{
             color: 'white',
-            fontWeight: 600,
-            fontSize: 20,
+            fontFamily: 'Lato-Bold',
+            fontSize: 16,
             textShadowColor: 'rgba(0, 0, 0, 0.75)',
             textShadowOffset: {width: -1, height: 1},
             textShadowRadius: 10,
