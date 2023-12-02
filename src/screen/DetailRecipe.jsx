@@ -22,21 +22,64 @@ import {
   ImageBackground,
   Image,
   Button,
+  ActivityIndicator,
 } from 'react-native';
 import BottomNavbar from '../components/BottomNavbar';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-
+import axios from 'axios';
+import {backendUrl} from '../config';
+import {black} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import UserComment from '../components/UserComment';
 export default function DetailRecipe({navigation, route}) {
-  const [comments, setComments] = React.useState(undefined);
-  const theme = useTheme();
   const {height, width, scale, fontScale} = useWindowDimensions();
-  const {image, title, first_name, last_name, ingredients} = route.params;
+  const theme = useTheme();
+  const {recipes_uid} = route.params;
 
-  console.log(route.params);
+  const [title, setTitle] = React.useState(undefined);
+  const [image, setImage] = React.useState(undefined);
+  const [fname, setFname] = React.useState(undefined);
+  const [lname, setLname] = React.useState(undefined);
+  const [ingredients, setIngredient] = React.useState(undefined);
 
-  React.useEffect(() => {}, []);
+  const [comments, setComments] = React.useState(undefined);
+  const [loading, setLoading] = React.useState(false);
 
-  const inset = useSafeAreaInsets();
+  const [newComment, setNewComment] = React.useState('');
+
+  const initScreen = async url => {
+    try {
+      setLoading(true);
+
+      const food = await axios({
+        method: 'get',
+        url: `${backendUrl}/recipes/${recipes_uid}`,
+      });
+
+      const comment = await axios({
+        method: 'get',
+        url: `${backendUrl}/recipes/${recipes_uid}/detail/comments`,
+      });
+
+      console.log(food.data.data[0]);
+      setImage(food?.data?.data[0]?.image);
+      setTitle(food?.data?.data[0]?.title);
+      setFname(food?.data?.data[0]?.first_name);
+      setLname(food?.data?.data[0]?.last_name);
+      setIngredient(food?.data?.data[0]?.ingredients);
+
+      setComments(comment.data.data);
+      console.log(comment.data.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    initScreen();
+  }, []);
+
   const styles = StyleSheet.create({
     headerImage: {
       height: 340,
@@ -70,132 +113,167 @@ export default function DetailRecipe({navigation, route}) {
   return (
     <SafeAreaView style={{flexGrow: 1}}>
       <StatusBar backgroundColor="#c40900ff" />
-      <View>
-        <ImageBackground src={image} style={styles.headerImage}>
-          <View>
-            <Text style={styles.headerBack}>Back</Text>
-          </View>
-        </ImageBackground>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
+      {loading ? (
+        <View
           style={{
-            marginBottom: 64,
-            zIndex: 999,
+            flexGrow: 1,
+            backgroundColor: 'white',
+            justifyContent: 'center',
+            alignContent: 'center',
           }}>
-          <View
-            style={{
-              paddingHorizontal: 24,
-              paddingVertical: 20,
-              borderTopRightRadius: 24,
-              borderTopLeftRadius: 24,
-              backgroundColor: 'white',
-              marginTop: 300,
-            }}>
+          <View style={{justifyContent: 'center', gap: 10}}>
+            <ActivityIndicator size="large" color={theme.colors.tmRed} />
+            <Text
+              style={{
+                textAlign: 'center',
+                color: 'black',
+                fontFamily: 'Montserrat-Bold',
+              }}>
+              Loading
+            </Text>
+          </View>
+        </View>
+      ) : (
+        <View>
+          <ImageBackground
+            src={image === undefined ? 'https://placehold.co/400' : image}
+            style={styles.headerImage}>
             <View>
-              <Text style={styles.Title}>{title}</Text>
-              <Text style={styles.Creator}>
-                {`Created by ${first_name} ${last_name}`}
-              </Text>
+              <Text style={styles.headerBack}>Back</Text>
             </View>
+          </ImageBackground>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{
+              marginBottom: 64,
+              zIndex: 999,
+            }}>
+            <View
+              style={{
+                paddingHorizontal: 24,
+                paddingVertical: 20,
+                borderTopRightRadius: 24,
+                borderTopLeftRadius: 24,
+                backgroundColor: 'white',
+                marginTop: 300,
+              }}>
+              <View>
+                <Text style={styles.Title}>{title}</Text>
+                <Text style={styles.Creator}>
+                  {`Created by ${fname} ${lname}`}
+                </Text>
+              </View>
 
-            <View style={{margin: 10}}>
-              <Text
-                style={{
-                  fontFamily: 'Lato-BlackItalic',
-                  fontSize: 20,
-                  color: 'black',
-                  marginVertical: 4,
-                }}>
-                Ingredients :
-              </Text>
-              <DataTable>
-                {ingredients?.ingridient?.map((ingred, index) => {
-                  return (
-                    <DataTable.Row key={index}>
-                      <DataTable.Cell>
-                        <Text
-                          style={{
-                            fontFamily: 'Lato-Regular',
-                            color: 'black',
-                          }}>
-                          {ingred}
-                        </Text>
-                      </DataTable.Cell>
-                    </DataTable.Row>
-                  );
-                })}
-              </DataTable>
-            </View>
-
-            <View style={{margin: 10}}>
-              <Text
-                style={{
-                  fontFamily: 'Lato-BlackItalic',
-                  fontSize: 20,
-                  color: 'black',
-                  marginVertical: 4,
-                }}>
-                The Steps :
-              </Text>
-              <DataTable>
-                {ingredients?.steps?.map((ingred, index) => {
-                  return (
-                    <DataTable.Row key={index}>
-                      <DataTable.Cell style={{flex: 0}}>
-                        {index + 1 + '     '}
-                      </DataTable.Cell>
-                      <DataTable.Cell>
-                        <View style={{padding: 2}}>
+              <View style={{margin: 10}}>
+                <Text
+                  style={{
+                    fontFamily: 'Lato-BlackItalic',
+                    fontSize: 20,
+                    color: 'black',
+                    marginVertical: 4,
+                  }}>
+                  Ingredients :
+                </Text>
+                <DataTable>
+                  {ingredients?.ingridient?.map((ingred, index) => {
+                    return (
+                      <DataTable.Row key={index}>
+                        <DataTable.Cell>
                           <Text
                             style={{
                               fontFamily: 'Lato-Regular',
                               color: 'black',
-                              lineHeight: 22,
                             }}>
                             {ingred}
                           </Text>
-                        </View>
-                      </DataTable.Cell>
-                    </DataTable.Row>
-                  );
-                })}
-              </DataTable>
+                        </DataTable.Cell>
+                      </DataTable.Row>
+                    );
+                  })}
+                </DataTable>
+              </View>
+
+              <View style={{margin: 10}}>
+                <Text
+                  style={{
+                    fontFamily: 'Lato-BlackItalic',
+                    fontSize: 20,
+                    color: 'black',
+                    marginVertical: 4,
+                  }}>
+                  The Steps :
+                </Text>
+                <DataTable>
+                  {ingredients?.steps?.map((ingred, index) => {
+                    return (
+                      <DataTable.Row key={index}>
+                        <DataTable.Cell style={{flex: 0}}>
+                          {index + 1 + '     '}
+                        </DataTable.Cell>
+                        <DataTable.Cell>
+                          <View style={{padding: 2}}>
+                            <Text
+                              style={{
+                                fontFamily: 'Lato-Regular',
+                                color: 'black',
+                                lineHeight: 22,
+                              }}>
+                              {ingred}
+                            </Text>
+                          </View>
+                        </DataTable.Cell>
+                      </DataTable.Row>
+                    );
+                  })}
+                </DataTable>
+              </View>
+
+              <View style={{margin: 10, flexDirection: 'column', gap: 10}}>
+                <Text
+                  style={{
+                    fontFamily: 'Montserrat-Bold',
+                    color: 'black',
+                  }}>
+                  Post Comment
+                </Text>
+
+                <TextInput
+                  style={{
+                    paddingVertical: 15,
+                    fontFamily: 'Montserrat-Regular',
+                  }}
+                  multiline={true}
+                  numberOfLines={4}
+                  mode="outlined"
+                  outlineColor={theme.colors.gray20}
+                />
+
+                <Button title="send" color={theme.colors.tmRed} />
+              </View>
+
+              <View style={{margin: 10}}>
+                <Text
+                  style={{
+                    fontFamily: 'Montserrat-Bold',
+                    color: 'black',
+                  }}>
+                  Comments
+                </Text>
+
+                {comments === undefined ? (
+                  <Text>No Comment Found</Text>
+                ) : comments.length === 0 ? (
+                  <Text>No Comment Found</Text>
+                ) : (
+                  comments?.map((comment, index) => {
+                    return <UserComment key={index} comment={comment} />;
+                  })
+                )}
+              </View>
             </View>
-
-            <View style={{margin: 10, flexDirection: 'column', gap: 10}}>
-              <Text
-                style={{
-                  fontFamily: 'Montserrat-Bold',
-                  color: 'black',
-                }}>
-                Post Comment
-              </Text>
-
-              <TextInput
-                style={{paddingVertical: 15, fontFamily: 'Montserrat-Regular'}}
-                multiline={true}
-                numberOfLines={4}
-                mode="outlined"
-                outlineColor={theme.colors.gray20}
-              />
-
-              <Button title="send" color={theme.colors.tmRed} />
-            </View>
-
-            <View style={{margin: 10}}>
-              <Text
-                style={{
-                  fontFamily: 'Montserrat-Bold',
-                  color: 'black',
-                }}>
-                Comments
-              </Text>
-
-              {comments === undefined ? <Text>No Comment Found</Text> : null}
-            </View>
-          </View>
-        </ScrollView>
-      </View>
+          </ScrollView>
+        </View>
+      )}
       <BottomNavbar navigation={navigation} screenName="Explore" />
     </SafeAreaView>
   );
