@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-unused-vars */
 /**
@@ -8,28 +9,27 @@
  */
 
 import React from 'react';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTheme, DataTable, TextInput} from 'react-native-paper';
 import {
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
-  Dimensions,
   useWindowDimensions,
   ImageBackground,
   Image,
   Button,
   ActivityIndicator,
+  Linking,
 } from 'react-native';
 import BottomNavbar from '../components/BottomNavbar';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import axios from 'axios';
 import {backendUrl} from '../config';
-import {black} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 import UserComment from '../components/UserComment';
+import * as Icons from 'react-native-feather';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 export default function DetailRecipe({navigation, route}) {
   const {height, width, scale, fontScale} = useWindowDimensions();
   const theme = useTheme();
@@ -40,6 +40,7 @@ export default function DetailRecipe({navigation, route}) {
   const [fname, setFname] = React.useState(undefined);
   const [lname, setLname] = React.useState(undefined);
   const [ingredients, setIngredient] = React.useState(undefined);
+  const [youtube, setYoutube] = React.useState(undefined);
 
   const [comments, setComments] = React.useState(undefined);
   const [loading, setLoading] = React.useState(false);
@@ -66,6 +67,7 @@ export default function DetailRecipe({navigation, route}) {
       setFname(food?.data?.data[0]?.first_name);
       setLname(food?.data?.data[0]?.last_name);
       setIngredient(food?.data?.data[0]?.ingredients);
+      setYoutube(food?.data?.data[0]?.video_url);
 
       setComments(comment.data.data);
       console.log(comment.data.data);
@@ -139,7 +141,7 @@ export default function DetailRecipe({navigation, route}) {
             src={image === undefined ? 'https://placehold.co/400' : image}
             style={styles.headerImage}>
             <View>
-              <Text style={styles.headerBack}>Back</Text>
+              <Text style={styles.headerBack}> </Text>
             </View>
           </ImageBackground>
           <ScrollView
@@ -157,11 +159,26 @@ export default function DetailRecipe({navigation, route}) {
                 backgroundColor: 'white',
                 marginTop: 300,
               }}>
-              <View>
-                <Text style={styles.Title}>{title}</Text>
-                <Text style={styles.Creator}>
-                  {`Created by ${fname} ${lname}`}
-                </Text>
+              {/* Youtube Link */}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                  }}>
+                  <Text style={styles.Title}>{title}</Text>
+                  <Text style={styles.Creator}>
+                    {`Created by ${fname} ${lname}`}
+                  </Text>
+                </View>
+                <TouchableOpacity onPress={() => Linking.openURL(youtube)}>
+                  <View>
+                    <Icons.Youtube height={40} width={40} color="black" />
+                  </View>
+                </TouchableOpacity>
               </View>
 
               <View style={{margin: 10}}>
@@ -266,7 +283,11 @@ export default function DetailRecipe({navigation, route}) {
                   <Text>No Comment Found</Text>
                 ) : (
                   comments?.map((comment, index) => {
-                    return <UserComment key={index} comment={comment} />;
+                    return (
+                      <View key={index}>
+                        <UserComment comment={comment} />
+                      </View>
+                    );
                   })
                 )}
               </View>
