@@ -9,7 +9,7 @@
 
 import React from 'react';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Searchbar, useTheme} from 'react-native-paper';
+import {useTheme} from 'react-native-paper';
 import {
   ScrollView,
   StatusBar,
@@ -27,6 +27,7 @@ import {
 import BottomNavbar from '../components/BottomNavbar';
 import * as Icons from 'react-native-feather';
 import ProfileLink from '../components/ProfileLink';
+import ProfileHeader from '../components/ProfileHeader';
 
 export default function ScreenTemplate({navigation, route}) {
   const theme = useTheme();
@@ -35,30 +36,7 @@ export default function ScreenTemplate({navigation, route}) {
   React.useEffect(() => {}, []);
 
   const styles = StyleSheet.create({
-    headerBody: {
-      height: 300,
-      backgroundColor: theme.colors.tmRed,
-      flexDirection: 'column',
-      gap: 10,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    headerProfile: {
-      height: 120,
-      width: 120,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'white',
-      borderColor: 'white',
-      borderWidth: 8,
-      borderRadius: 60,
-    },
-    headerText: {
-      fontFamily: 'Montserrat-Bold',
-      color: 'white',
-      textAlign: 'center',
-    },
-    profileLinkBody: {
+    LinkBody: {
       backgroundColor: 'white',
       marginTop: -30,
       padding: 24,
@@ -69,48 +47,35 @@ export default function ScreenTemplate({navigation, route}) {
   });
 
   return (
-    <SafeAreaView
-      style={{
-        height: height - StatusBar.currentHeight,
-        backgroundColor: 'white',
-      }}>
+    <SafeAreaView style={{backgroundColor: 'white', flexGrow: 1}}>
       <StatusBar backgroundColor="#c40900ff" />
-      <View>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={{marginBottom: 64}}>
-          {/* Header */}
-          <View style={styles.headerBody}>
-            <View style={styles.headerProfile}>
-              <Icons.User color={theme.colors.tmRed} height={80} width={80} />
-            </View>
-            <View>
-              <Text style={styles.headerText}>Hi, Feel free to Join</Text>
-              <Text style={styles.headerText}>Enjoy Your Day!</Text>
-            </View>
-          </View>
-          {/* Profile Links */}
-          {/* Not Login */}
-          <View style={styles.profileLinkBody}>
-            <ProfileLink
-              title="Login"
-              navigation={navigation}
-              navigationLink="HomeScreen"
-              icon={<Icons.Users color="black" height={30} width={30} />}
-            />
-            <ProfileLink
-              title="Register"
-              navigation={navigation}
-              navigationLink="HomeScreen"
-              icon={<Icons.UserPlus color="black" height={30} width={30} />}
-            />
-          </View>
-          {/* Login */}
-          {/* <View style={styles.profileLinkBody}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{marginBottom: 64}}>
+        {/* Header */}
+        <ProfileHeader text1="Hi, Feel free to Join" text2="Enjoy Your Day!" />
+
+        {/* Profile Links */}
+        {/* Not Login */}
+        <View style={styles.LinkBody}>
+          <ProfileLink
+            title="Login"
+            navigation={navigation}
+            navigationLink="UserLogin"
+            icon={<Icons.Users color="black" height={25} width={25} />}
+          />
+          <ProfileLink
+            title="Register"
+            navigation={navigation}
+            navigationLink="HomeScreen"
+            icon={<Icons.UserPlus color="black" height={25} width={25} />}
+          />
+        </View>
+        {/* Login */}
+        {/* <View style={styles.profileLinkBody}>
             <Text>Not Login</Text>
           </View> */}
-        </ScrollView>
-      </View>
+      </ScrollView>
       <BottomNavbar navigation={navigation} screenName="Profile" />
     </SafeAreaView>
   );
