@@ -67,7 +67,7 @@ export default function ScreenTemplate({navigation, route}) {
           <ProfileLink
             title="Register"
             navigation={navigation}
-            navigationLink="HomeScreen"
+            navigationLink="UserRegister"
             icon={<Icons.UserPlus color="black" height={25} width={25} />}
           />
         </View>
