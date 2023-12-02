@@ -11,10 +11,12 @@ import {MD3LightTheme as DefaultTheme, PaperProvider} from 'react-native-paper';
 import DetailRecipe from './src/screen/DetailRecipe';
 import UserProfile from './src/screen/UserProfile';
 import UserLogin from './src/screen/UserLogin';
+import UserRegister from './src/screen/UserRegister';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
+
 
 const theme = {
   ...DefaultTheme,
@@ -46,6 +48,7 @@ function StackNavigator() {
       <Stack.Screen name="DetailRecipe" component={DetailRecipe} />
       <Stack.Screen name="UserProfile" component={UserProfile} />
       <Stack.Screen name="UserLogin" component={UserLogin} />
+      <Stack.Screen name="UserRegister" component={UserRegister} />
     </Stack.Navigator>
   );
 }
