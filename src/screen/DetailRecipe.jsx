@@ -68,7 +68,7 @@ export default function DetailRecipe({navigation, route}) {
   });
 
   return (
-    <SafeAreaView edges={['top', 'right', 'bottom', 'left']}>
+    <SafeAreaView style={{flexGrow: 1}}>
       <StatusBar backgroundColor="#c40900ff" />
       <View>
         <ImageBackground src={image} style={styles.headerImage}>
