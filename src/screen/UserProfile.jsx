@@ -28,12 +28,30 @@ import BottomNavbar from '../components/BottomNavbar';
 import * as Icons from 'react-native-feather';
 import ProfileLink from '../components/ProfileLink';
 import ProfileHeader from '../components/ProfileHeader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ScreenTemplate({navigation, route}) {
   const theme = useTheme();
-  const {height, width, scale, fontScale} = useWindowDimensions();
 
-  React.useEffect(() => {}, []);
+  const [user, setUser] = React.useState(undefined);
+  const [token, setToken] = React.useState(undefined);
+
+  const checkAuth = async () => {
+    try {
+      const getUser = await AsyncStorage.getItem('user');
+      const getToken = await AsyncStorage.getItem('token');
+      if (getUser && getToken) {
+        setUser(JSON.parse(getUser));
+        setToken(getToken);
+      }
+    } catch (error) {
+      //
+    }
+  };
+
+  React.useEffect(() => {
+    checkAuth();
+  }, []);
 
   const styles = StyleSheet.create({
     LinkBody: {
@@ -52,25 +70,47 @@ export default function ScreenTemplate({navigation, route}) {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{marginBottom: 64}}>
-        {/* Header */}
-        <ProfileHeader text1="Hi, Feel free to Join" text2="Enjoy Your Day!" />
-
         {/* Profile Links */}
+
         {/* Not Login */}
-        <View style={styles.LinkBody}>
-          <ProfileLink
-            title="Login"
-            navigation={navigation}
-            navigationLink="UserLogin"
-            icon={<Icons.Users color="black" height={18} width={18} />}
-          />
-          <ProfileLink
-            title="Register"
-            navigation={navigation}
-            navigationLink="UserRegister"
-            icon={<Icons.UserPlus color="black" height={18} width={18} />}
-          />
-        </View>
+        {!(user === undefined && token === undefined) ? (
+          <>
+            <ProfileHeader
+              text1={`Hi, ${user.first_name}`}
+              text2="Have a Day!"
+            />
+            <View style={styles.LinkBody}>
+              <ProfileLink
+                title="Logout"
+                navigation={navigation}
+                logout={true}
+                icon={<Icons.LogOut color="black" height={18} width={18} />}
+              />
+            </View>
+          </>
+        ) : (
+          <>
+            {/* Header */}
+            <ProfileHeader
+              text1="Hi, Feel free to Join"
+              text2="Enjoy Your Day!"
+            />
+            <View style={styles.LinkBody}>
+              <ProfileLink
+                title="Login"
+                navigation={navigation}
+                navigationLink="UserLogin"
+                icon={<Icons.Users color="black" height={18} width={18} />}
+              />
+              <ProfileLink
+                title="Register"
+                navigation={navigation}
+                navigationLink="UserRegister"
+                icon={<Icons.UserPlus color="black" height={18} width={18} />}
+              />
+            </View>
+          </>
+        )}
         {/* Login */}
         {/* <View style={styles.profileLinkBody}>
             <Text>Not Login</Text>

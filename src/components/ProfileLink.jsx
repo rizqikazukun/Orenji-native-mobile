@@ -20,8 +20,15 @@ import {
   TouchableNativeFeedback,
   Button,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function ProfileLink({navigation, navigationLink, title, icon}) {
+export default function ProfileLink({
+  navigation,
+  navigationLink,
+  title,
+  icon,
+  logout,
+}) {
   const styles = StyleSheet.create({
     outerBody: {
       flexDirection: 'row',
@@ -39,7 +46,15 @@ export default function ProfileLink({navigation, navigationLink, title, icon}) {
 
   return (
     <TouchableNativeFeedback
-      onPress={() => navigation.navigate(navigationLink)}>
+      onPress={async () => {
+        if (logout) {
+          await AsyncStorage.removeItem('user');
+          await AsyncStorage.removeItem('token');
+          navigation.navigate('HomeScreen');
+        } else {
+          navigation.navigate(navigationLink);
+        }
+      }}>
       <View style={styles.outerBody}>
         <View style={{flexDirection: 'row', gap: 20}}>
           {icon}

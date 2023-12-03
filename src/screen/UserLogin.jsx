@@ -56,7 +56,10 @@ export default function UserLogin({navigation}) {
 
       await AsyncStorage.setItem('token', `Bearer ${request.data.token}`);
       await AsyncStorage.setItem('user', JSON.stringify(request.data.data));
-      navigation.navigate('UserProfile');
+
+      navigation.navigate('HomeScreen');
+      // console.log(await AsyncStorage.getItem('token'));
+      // console.log(await AsyncStorage.getItem('user'));
     } catch (err) {
       if (err.response.status === 422) {
         setSnackMessage(String(err.response.data.message));
