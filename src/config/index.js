@@ -1,3 +1,3 @@
 module.exports = {
-  backendUrl: 'http://192.168.21.135:3001',
+  backendUrl: 'https://receipes-web-be-production.up.railway.app',
 };
