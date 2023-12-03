@@ -1,25 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Searchbar, useTheme} from 'react-native-paper';
+import {useTheme} from 'react-native-paper';
 import {
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
-  Dimensions,
   useWindowDimensions,
-  ImageBackground,
-  Image,
-  TouchableWithoutFeedback,
-  ActivityIndicator,
-  TouchableHighlight,
-  TouchableOpacity,
   TouchableNativeFeedback,
-  Button,
 } from 'react-native';
 import * as Icons from 'react-native-feather';
 
@@ -51,61 +39,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const CTA = ({width, theme, navigation}) => {
-  return (
-    <View
-      style={{
-        position: 'absolute',
-        bottom: 64,
-        height: 50,
-        width: width,
-        backgroundColor: '#c40900ff',
-        paddingHorizontal: 10,
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        alignContent: 'center',
-        flexDirection: 'row',
-        zIndex: 9999,
-      }}>
-      <Text style={{color: 'white', fontFamily: 'Montserrat-Medium'}}>
-        Sudah punya akun Tomato?
-      </Text>
-      <View
-        style={{
-          backgroundColor: 'white',
-          height: 30,
-          width: 80,
-          borderRadius: 30,
-          justifyContent: 'center',
-          alignContent: 'center',
-        }}>
-        <TouchableNativeFeedback
-          onPress={() => navigation.navigate('UserLogin')}>
-          <Text
-            style={{
-              fontFamily: 'Montserrat-Bold',
-              textAlign: 'center',
-              color: theme.colors.tmRed,
-            }}>
-            Login
-          </Text>
-        </TouchableNativeFeedback>
-      </View>
-    </View>
-  );
-};
-
 export default function BottomNavbar({navigation, screenName}) {
   const theme = useTheme();
-  const [rippleOverflow, setRippleOverflow] = React.useState();
-  const {height, width, scale, fontScale} = useWindowDimensions();
-  const [login, setLogin] = React.useState(false);
 
   return (
     <>
-      {login ? null : screenName !== 'Home' ? null : (
-        <CTA width={width} theme={theme} navigation={navigation} />
-      )}
       <View style={styles.body}>
         <View style={styles.container}>
           {[
