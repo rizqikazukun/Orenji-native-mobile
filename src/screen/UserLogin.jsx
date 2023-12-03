@@ -9,32 +9,80 @@
 
 import React from 'react';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useTheme, TextInput, Button} from 'react-native-paper';
+import {
+  useTheme,
+  TextInput,
+  Button,
+  Portal,
+  Modal,
+  Snackbar,
+} from 'react-native-paper';
 import {
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
-  Dimensions,
-  useWindowDimensions,
-  ImageBackground,
-  Image,
-  TouchableNativeFeedback,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from 'react-native';
 import BottomNavbar from '../components/BottomNavbar';
-import * as Icons from 'react-native-feather';
-import ProfileLink from '../components/ProfileLink';
 import ProfileHeader from '../components/ProfileHeader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {backendUrl} from '../config';
 
-export default function UserLogin({navigation, route}) {
+export default function UserLogin({navigation}) {
   const theme = useTheme();
-  const {height, width, scale, fontScale} = useWindowDimensions();
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [snackMessage, setSnackMessage] = React.useState('');
+  const [visible, setVisible] = React.useState(false);
+
+  const signButtonHandler = async () => {
+    try {
+      setIsLoading(true);
+      const request = await axios({
+        method: 'post',
+        url: `${backendUrl}/user/login`,
+        data: {
+          email,
+          password,
+        },
+      });
+
+      await AsyncStorage.setItem('token', `Bearer ${request.data.token}`);
+      await AsyncStorage.setItem('user', JSON.stringify(request.data.data));
+      navigation.navigate('UserProfile');
+    } catch (err) {
+      if (err.response.status === 422) {
+        setSnackMessage(String(err.response.data.message));
+        setVisible(true);
+      }
+
+      if (err.response.status === 401) {
+        setSnackMessage('Wrong Password');
+        setVisible(true);
+        return;
+      }
+
+      if (err.response.status === 404) {
+        setSnackMessage('User Not Found');
+        setVisible(true);
+        return;
+      }
+
+      if (err.response.status === 500) {
+        setSnackMessage(String(err.response.data.massage));
+        setVisible(true);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   React.useEffect(() => {}, []);
 
@@ -52,6 +100,46 @@ export default function UserLogin({navigation, route}) {
 
   return (
     <SafeAreaView style={{backgroundColor: 'white', flexGrow: 1}}>
+      <Snackbar
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        wrapperStyle={{top: 0}}
+        style={{
+          backgroundColor: 'white',
+          justifyContent: 'center',
+          zIndex: 999,
+        }}
+        action={{
+          label: 'Close',
+          labelStyle: {color: 'black'},
+          onPress: () => {
+            setSnackMessage('');
+          },
+        }}>
+        <Text style={{color: theme.colors.tmRed}}>{snackMessage}</Text>
+      </Snackbar>
+
+      <Portal>
+        <Modal
+          visible={isLoading}
+          onDismiss={() => {
+            //
+          }}
+          contentContainerStyle={{backgroundColor: 'transparent', padding: 20}}>
+          <View style={{justifyContent: 'center', gap: 10}}>
+            <ActivityIndicator size="large" color={theme.colors.tmRed} />
+            <Text
+              style={{
+                textAlign: 'center',
+                color: 'black',
+                fontFamily: 'Montserrat-Bold',
+              }}>
+              Loading
+            </Text>
+          </View>
+        </Modal>
+      </Portal>
+
       <StatusBar backgroundColor="#c40900ff" />
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -112,7 +200,7 @@ export default function UserLogin({navigation, route}) {
               borderRadius: 50,
               justifyContent: 'center',
             }}
-            onPress={() => console.log('Pressed')}>
+            onPress={signButtonHandler}>
             <Text style={{fontFamily: 'Montserrat-Medium'}}>Login</Text>
           </Button>
 
@@ -125,6 +213,7 @@ export default function UserLogin({navigation, route}) {
               }}>
               {"Don't have an account? "}
             </Text>
+
             <TouchableWithoutFeedback
               onPress={() => navigation.navigate('UserRegister')}>
               <Text
