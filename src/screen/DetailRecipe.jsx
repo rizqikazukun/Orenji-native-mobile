@@ -10,7 +10,14 @@
 
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useTheme, DataTable, TextInput} from 'react-native-paper';
+import {
+  useTheme,
+  DataTable,
+  TextInput,
+  Snackbar,
+  Portal,
+  Modal,
+} from 'react-native-paper';
 import {
   ScrollView,
   StatusBar,
@@ -19,7 +26,6 @@ import {
   View,
   useWindowDimensions,
   ImageBackground,
-  Image,
   Button,
   ActivityIndicator,
   Linking,
@@ -30,6 +36,8 @@ import {backendUrl} from '../config';
 import UserComment from '../components/UserComment';
 import * as Icons from 'react-native-feather';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export default function DetailRecipe({navigation, route}) {
   const {height, width, scale, fontScale} = useWindowDimensions();
   const theme = useTheme();
@@ -39,6 +47,10 @@ export default function DetailRecipe({navigation, route}) {
   const [image, setImage] = React.useState(undefined);
   const [fname, setFname] = React.useState(undefined);
   const [lname, setLname] = React.useState(undefined);
+
+  const [user, setUser] = React.useState(undefined);
+  const [token, setToken] = React.useState(undefined);
+
   const [ingredients, setIngredient] = React.useState(undefined);
   const [youtube, setYoutube] = React.useState(undefined);
 
@@ -47,9 +59,19 @@ export default function DetailRecipe({navigation, route}) {
 
   const [newComment, setNewComment] = React.useState('');
 
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [snackMessage, setSnackMessage] = React.useState('');
+  const [visible, setVisible] = React.useState(false);
+
   const initScreen = async url => {
     try {
       setLoading(true);
+
+      const getUser = await AsyncStorage.getItem('user');
+      const getToken = await AsyncStorage.getItem('token');
+
+      setUser(JSON.parse(getUser));
+      setToken(getToken);
 
       const food = await axios({
         method: 'get',
@@ -70,11 +92,59 @@ export default function DetailRecipe({navigation, route}) {
       setYoutube(food?.data?.data[0]?.video_url);
 
       setComments(comment.data.data);
-      console.log(comment.data.data);
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const commentHandler = async (req, res) => {
+    try {
+      setIsLoading(true);
+      await axios({
+        method: 'post',
+        url: `${backendUrl}/comments`,
+        data: {
+          recipeUid: recipes_uid,
+          message: newComment,
+        },
+        headers: {
+          Authorization: token || '',
+        },
+      });
+
+      setNewComment('');
+      initScreen();
+    } catch (error) {
+      console.log(error.response.status);
+      if (
+        error.message.includes('user_uid') ||
+        error.message.includes('token')
+      ) {
+        setSnackMessage('Please Login First');
+        setVisible(true);
+        return;
+      }
+      if (error?.response?.status === 401) {
+        setSnackMessage('Please Login First');
+        setVisible(true);
+        return;
+      }
+
+      if (error?.response?.status === 422) {
+        setSnackMessage("Comment cant't be empty");
+        setVisible(true);
+        return;
+      }
+
+      if (error?.response?.status === 500) {
+        setSnackMessage('Internal Application Error');
+        setVisible(true);
+        return;
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -114,6 +184,46 @@ export default function DetailRecipe({navigation, route}) {
 
   return (
     <SafeAreaView style={{flexGrow: 1}}>
+      <Snackbar
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        wrapperStyle={{top: 0}}
+        style={{
+          backgroundColor: 'white',
+          justifyContent: 'center',
+          zIndex: 999,
+        }}
+        action={{
+          label: 'Close',
+          labelStyle: {color: 'black'},
+          onPress: () => {
+            setSnackMessage('');
+          },
+        }}>
+        <Text style={{color: theme.colors.tmRed}}>{snackMessage}</Text>
+      </Snackbar>
+
+      <Portal>
+        <Modal
+          visible={isLoading}
+          onDismiss={() => {
+            //
+          }}
+          contentContainerStyle={{backgroundColor: 'transparent', padding: 20}}>
+          <View style={{justifyContent: 'center', gap: 10}}>
+            <ActivityIndicator size="large" color={theme.colors.tmRed} />
+            <Text
+              style={{
+                textAlign: 'center',
+                color: 'black',
+                fontFamily: 'Montserrat-Bold',
+              }}>
+              Loading
+            </Text>
+          </View>
+        </Modal>
+      </Portal>
+
       <StatusBar backgroundColor="#c40900ff" />
       {loading ? (
         <View
@@ -263,9 +373,14 @@ export default function DetailRecipe({navigation, route}) {
                   numberOfLines={4}
                   mode="outlined"
                   outlineColor={theme.colors.gray20}
+                  onChangeText={input => setNewComment(input)}
                 />
 
-                <Button title="send" color={theme.colors.tmRed} />
+                <Button
+                  title="send"
+                  color={theme.colors.tmRed}
+                  onPress={commentHandler}
+                />
               </View>
 
               <View style={{margin: 10}}>
