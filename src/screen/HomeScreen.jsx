@@ -100,9 +100,7 @@ export default function HomeScreen({navigation}) {
         </View>
       ) : (
         <View>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={{marginBottom: 64}}>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <View
               style={{
                 height: 220,
@@ -164,7 +162,9 @@ export default function HomeScreen({navigation}) {
                 {popularRecipes?.map((recipe, index) => (
                   <TouchableWithoutFeedback
                     key={index}
-                    onPress={() => navigation.navigate('DetailRecipe', recipe)}>
+                    onPress={() =>
+                      navigation.navigate('Detail Recipe', recipe)
+                    }>
                     <View>
                       <PopularCard title={recipe.title} source={recipe.image} />
                     </View>
@@ -227,7 +227,9 @@ export default function HomeScreen({navigation}) {
                 return (
                   <TouchableWithoutFeedback
                     key={index}
-                    onPress={() => navigation.navigate('DetailRecipe', recipe)}>
+                    onPress={() =>
+                      navigation.navigate('Detail Recipe', recipe)
+                    }>
                     <View>
                       <HeatCard
                         source={recipe.image}
@@ -242,9 +244,6 @@ export default function HomeScreen({navigation}) {
             </View>
           </ScrollView>
         </View>
-      )}
-      {loading ? null : (
-        <BottomNavbar navigation={navigation} screenName="Home" />
       )}
     </SafeAreaView>
   );

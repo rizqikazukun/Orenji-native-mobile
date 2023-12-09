@@ -38,6 +38,7 @@ export default function ScreenTemplate({navigation, route}) {
 
   const checkAuth = async () => {
     try {
+      console.log('loading');
       const getUser = await AsyncStorage.getItem('user');
       const getToken = await AsyncStorage.getItem('token');
       if (getUser && getToken) {
@@ -46,6 +47,8 @@ export default function ScreenTemplate({navigation, route}) {
       }
     } catch (error) {
       //
+    } finally {
+      console.log('finish');
     }
   };
 
@@ -67,9 +70,7 @@ export default function ScreenTemplate({navigation, route}) {
   return (
     <SafeAreaView style={{backgroundColor: 'white', flexGrow: 1}}>
       <StatusBar backgroundColor={theme.colors.OjenjiMid} />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{marginBottom: 64}}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {/* Profile Links */}
 
         {/* Not Login */}
@@ -116,7 +117,6 @@ export default function ScreenTemplate({navigation, route}) {
             <Text>Not Login</Text>
           </View> */}
       </ScrollView>
-      <BottomNavbar navigation={navigation} screenName="Profile" />
     </SafeAreaView>
   );
 }

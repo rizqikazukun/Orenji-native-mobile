@@ -147,11 +147,9 @@ export default function UserRegister({navigation, route}) {
       </Portal>
 
       <StatusBar backgroundColor={theme.colors.OjenjiMid} />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{marginBottom: 64}}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
-        <ProfileHeader text1="Register" />
+        <ProfileHeader />
 
         <View style={styles.LinkBody}>
           <Text
@@ -268,7 +266,6 @@ export default function UserRegister({navigation, route}) {
           </View>
         </View>
       </ScrollView>
-      <BottomNavbar navigation={navigation} screenName="Profile" />
     </SafeAreaView>
   );
 }

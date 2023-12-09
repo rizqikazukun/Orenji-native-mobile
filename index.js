@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable react/no-unstable-nested-components */
 /**
  * @format
  */
@@ -14,8 +14,10 @@ import UserLogin from './src/screen/UserLogin';
 import UserRegister from './src/screen/UserRegister';
 
 import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+// import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
+import * as Icons from 'react-native-feather';
 
 const theme = {
   ...DefaultTheme,
@@ -38,25 +40,91 @@ const theme = {
 };
 
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
-function StackNavigator() {
+function HomeNav() {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="HomeScreen" component={HomeScreen} />
-      <Stack.Screen name="DetailRecipe" component={DetailRecipe} />
-      <Stack.Screen name="UserProfile" component={UserProfile} />
-      <Stack.Screen name="UserLogin" component={UserLogin} />
-      <Stack.Screen name="UserRegister" component={UserRegister} />
+      <Stack.Screen name="index" component={HomeScreen} />
+      <Stack.Screen
+        name="Detail Recipe"
+        component={DetailRecipe}
+        options={{
+          headerTitleAlign: 'center',
+          headerShown: true,
+          headerTitleStyle: {fontFamily: 'Montserrat-Bold'},
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function ProfileNav() {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="index" component={UserProfile} />
+      <Stack.Screen
+        name="UserLogin"
+        component={UserLogin}
+        options={{
+          title: 'Login',
+          headerTitleAlign: 'center',
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.colors.OjenjiMid,
+          },
+          headerTintColor: 'white',
+          headerTitleStyle: {fontFamily: 'Montserrat-Bold'},
+        }}
+      />
+      <Stack.Screen
+        name="UserRegister"
+        component={UserRegister}
+        options={{
+          title: 'Register',
+          headerTitleAlign: 'center',
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.colors.OjenjiMid,
+          },
+          cardShadowEnabled: false,
+          headerTintColor: 'white',
+          headerTitleStyle: {fontFamily: 'Montserrat-Bold'},
+        }}
+      />
     </Stack.Navigator>
   );
 }
 
 function TabNavigator() {
   return (
-    <Tab.Navigator screenOptions={{headerShown: false}}>
-      <Tab.Screen name="HomeScreen" component={HomeScreen} />
-      <Tab.Screen name="UserProfile" component={UserProfile} />
+    <Tab.Navigator
+      initialRouteName="Home"
+      shifting={true}
+      sceneAnimationType="shifting"
+      activeColor={theme.colors.OjenjiMid}
+      inactiveColor={theme.colors.gray20}
+      screenOptions={{
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarColor: 'white',
+      }}
+      backBehavior="order"
+      labeled={false}>
+      <Tab.Screen
+        name="Home"
+        component={HomeNav}
+        options={{
+          tabBarIcon: ({color}) => <Icons.Home color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileNav}
+        options={{
+          tabBarIcon: ({color}) => <Icons.User color={color} />,
+        }}
+      />
     </Tab.Navigator>
   );
 }
@@ -65,7 +133,7 @@ export default function Main() {
   return (
     <NavigationContainer>
       <PaperProvider theme={theme}>
-        <StackNavigator />
+        <TabNavigator />
       </PaperProvider>
     </NavigationContainer>
   );

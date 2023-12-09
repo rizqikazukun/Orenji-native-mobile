@@ -57,7 +57,7 @@ export default function UserLogin({navigation}) {
       await AsyncStorage.setItem('token', `Bearer ${request.data.token}`);
       await AsyncStorage.setItem('user', JSON.stringify(request.data.data));
 
-      navigation.navigate('HomeScreen');
+      navigation.navigate('Home');
       // console.log(await AsyncStorage.getItem('token'));
       // console.log(await AsyncStorage.getItem('user'));
     } catch (err) {
@@ -144,11 +144,9 @@ export default function UserLogin({navigation}) {
       </Portal>
 
       <StatusBar backgroundColor={theme.colors.OjenjiMid} />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{marginBottom: 64}}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
-        <ProfileHeader text1="Login" />
+        <ProfileHeader />
 
         {/* Profile Links */}
         {/* Not Login */}
@@ -231,7 +229,6 @@ export default function UserLogin({navigation}) {
           </View>
         </View>
       </ScrollView>
-      <BottomNavbar navigation={navigation} screenName="Profile" />
     </SafeAreaView>
   );
 }

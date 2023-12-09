@@ -50,7 +50,7 @@ export default function ProfileLink({
         if (logout) {
           await AsyncStorage.removeItem('user');
           await AsyncStorage.removeItem('token');
-          navigation.navigate('HomeScreen');
+          navigation.navigate('Home');
         } else {
           navigation.navigate(navigationLink);
         }

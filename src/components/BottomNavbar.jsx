@@ -60,32 +60,32 @@ export default function BottomNavbar({navigation, screenName}) {
                 />
               ),
             },
-            // {
-            //   title: 'Explore',
-            //   link: 'HomeScreen',
-            //   icon: (
-            //     <Icons.Compass
-            //       color={
-            //         screenName === 'Explore'
-            //           ? theme.colors.OjenjiMid
-            //           : theme.colors.gray40
-            //       }
-            //     />
-            //   ),
-            // },
-            // {
-            //   title: 'Recipe',
-            //   link: 'HomeScreen',
-            //   icon: (
-            //     <Icons.Book
-            //       color={
-            //         screenName === 'Recipe'
-            //           ? theme.colors.OjenjiMid
-            //           : theme.colors.gray40
-            //       }
-            //     />
-            //   ),
-            // },
+            {
+              title: 'Explore',
+              link: 'HomeScreen',
+              icon: (
+                <Icons.Compass
+                  color={
+                    screenName === 'Explore'
+                      ? theme.colors.OjenjiMid
+                      : theme.colors.gray40
+                  }
+                />
+              ),
+            },
+            {
+              title: 'Recipe',
+              link: 'HomeScreen',
+              icon: (
+                <Icons.Book
+                  color={
+                    screenName === 'Recipe'
+                      ? theme.colors.OjenjiMid
+                      : theme.colors.gray40
+                  }
+                />
+              ),
+            },
             {
               title: 'Profile',
               link: 'UserProfile',

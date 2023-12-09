@@ -160,8 +160,6 @@ export default function DetailRecipe({navigation, route}) {
       paddingTop: 20,
       paddingBottom: 60,
       justifyContent: 'space-between',
-      position: 'absolute',
-      top: 0,
     },
     headerBack: {
       fontSize: 14,
@@ -247,19 +245,18 @@ export default function DetailRecipe({navigation, route}) {
         </View>
       ) : (
         <View>
-          <ImageBackground
-            src={image === undefined ? 'https://placehold.co/400' : image}
-            style={styles.headerImage}>
-            <View>
-              <Text style={styles.headerBack}> </Text>
-            </View>
-          </ImageBackground>
           <ScrollView
             showsVerticalScrollIndicator={false}
             style={{
-              marginBottom: 64,
               zIndex: 999,
             }}>
+            <ImageBackground
+              src={image === undefined ? 'https://placehold.co/400' : image}
+              style={styles.headerImage}>
+              <View>
+                <Text style={styles.headerBack}> </Text>
+              </View>
+            </ImageBackground>
             <View
               style={{
                 paddingHorizontal: 24,
@@ -267,7 +264,7 @@ export default function DetailRecipe({navigation, route}) {
                 borderTopRightRadius: 24,
                 borderTopLeftRadius: 24,
                 backgroundColor: 'white',
-                marginTop: 300,
+                marginTop: -24,
               }}>
               {/* Youtube Link */}
               <View
@@ -410,7 +407,6 @@ export default function DetailRecipe({navigation, route}) {
           </ScrollView>
         </View>
       )}
-      <BottomNavbar navigation={navigation} screenName="Explore" />
     </SafeAreaView>
   );
 }
