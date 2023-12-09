@@ -85,9 +85,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.tmtrcp.tomatorecipe"
+    namespace "com.ornj.orenji"
     defaultConfig {
-        applicationId "com.tmtrcp.tomatorecipe"
+        applicationId "com.ornj.orenji"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

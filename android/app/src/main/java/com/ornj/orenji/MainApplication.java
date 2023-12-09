@@ -1,4 +1,4 @@
-package com.tmtrcp.tomatorecipe;
+package com.ornj.orenji;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
