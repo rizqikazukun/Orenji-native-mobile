@@ -77,7 +77,7 @@ export default function HomeScreen({navigation}) {
       marginTop: 150,
     },
     h2_black: {
-      color: theme.colors.tmRed,
+      color: theme.colors.OjenjiMid,
       fontFamily: 'Montserrat-Black',
       fontSize: 20,
     },
@@ -89,14 +89,14 @@ export default function HomeScreen({navigation}) {
 
   return (
     <SafeAreaView style={{flexGrow: 1}}>
-      <StatusBar backgroundColor="#c40900ff" />
+      <StatusBar backgroundColor={theme.colors.OjenjiMid} />
       {loading === true ? (
         <View style={styles.loadingScreen}>
           <Image
             source={require('../assets/images/logo-w-slogan.png')}
             style={{width: 200, objectFit: 'contain'}}
           />
-          <ActivityIndicator size="large" color={`${theme.colors.tmRed}`} />
+          <ActivityIndicator size="large" color={`${theme.colors.OjenjiMid}`} />
         </View>
       ) : (
         <View>
@@ -124,6 +124,7 @@ export default function HomeScreen({navigation}) {
                     flexDirection: 'column',
                     paddingVertical: theme.padding.containerHorizontal,
                     paddingHorizontal: 28,
+                    justifyContent: 'flex-end',
                   }}>
                   <Image
                     style={{width: 160, objectFit: 'contain'}}

@@ -40,7 +40,7 @@ export default function ScreenTemplate({ navigation, route }) {
 
   return (
     <SafeAreaView edges={['top', 'right', 'bottom', 'left']} style={{ height: height - 30 }}>
-      <StatusBar backgroundColor="#c40900ff" />
+      <StatusBar backgroundColor={theme.colors.OjenjiMid} />
       <View>
         <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: 64 }}>
           <Text>Hello</Text>

@@ -27,7 +27,7 @@ export default function ProfileHeader({text1, text2}) {
   const styles = StyleSheet.create({
     headerBody: {
       height: 300,
-      backgroundColor: theme.colors.tmRed,
+      backgroundColor: theme.colors.OjenjiMid,
       flexDirection: 'column',
       gap: 10,
       justifyContent: 'center',
@@ -59,7 +59,7 @@ export default function ProfileHeader({text1, text2}) {
   return (
     <View style={styles.headerBody}>
       <View style={styles.headerProfile}>
-        <Icons.User color={theme.colors.tmRed} height={80} width={80} />
+        <Icons.User color={theme.colors.OjenjiMid} height={80} width={80} />
       </View>
       <HeaderMessage styles={styles} text1={text1} text2={text2} />
     </View>

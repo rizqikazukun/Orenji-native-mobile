@@ -17,13 +17,12 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 
-
 const theme = {
   ...DefaultTheme,
   version: 2,
   colors: {
     ...DefaultTheme.colors,
-    tmRed: '#c70800',
+    OjenjiMid: '#f0570bff',
     tmBlack: '#3F3A3A',
     gray5: '#F8F8F8',
     gray10: '#EFEFEF',

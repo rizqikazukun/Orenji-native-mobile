@@ -54,7 +54,7 @@ export default function BottomNavbar({navigation, screenName}) {
                 <Icons.Home
                   color={
                     screenName === 'Home'
-                      ? theme.colors.tmRed
+                      ? theme.colors.OjenjiMid
                       : theme.colors.gray40
                   }
                 />
@@ -67,7 +67,7 @@ export default function BottomNavbar({navigation, screenName}) {
             //     <Icons.Compass
             //       color={
             //         screenName === 'Explore'
-            //           ? theme.colors.tmRed
+            //           ? theme.colors.OjenjiMid
             //           : theme.colors.gray40
             //       }
             //     />
@@ -80,7 +80,7 @@ export default function BottomNavbar({navigation, screenName}) {
             //     <Icons.Book
             //       color={
             //         screenName === 'Recipe'
-            //           ? theme.colors.tmRed
+            //           ? theme.colors.OjenjiMid
             //           : theme.colors.gray40
             //       }
             //     />
@@ -93,7 +93,7 @@ export default function BottomNavbar({navigation, screenName}) {
                 <Icons.User
                   color={
                     screenName === 'Profile'
-                      ? theme.colors.tmRed
+                      ? theme.colors.OjenjiMid
                       : theme.colors.gray40
                   }
                 />

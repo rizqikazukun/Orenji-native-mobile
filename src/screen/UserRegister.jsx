@@ -122,7 +122,7 @@ export default function UserRegister({navigation, route}) {
             setSnackMessage('');
           },
         }}>
-        <Text style={{color: theme.colors.tmRed}}>{snackMessage}</Text>
+        <Text style={{color: theme.colors.OjenjiMid}}>{snackMessage}</Text>
       </Snackbar>
 
       <Portal>
@@ -133,7 +133,7 @@ export default function UserRegister({navigation, route}) {
           }}
           contentContainerStyle={{backgroundColor: 'transparent', padding: 20}}>
           <View style={{justifyContent: 'center', gap: 10}}>
-            <ActivityIndicator size="large" color={theme.colors.tmRed} />
+            <ActivityIndicator size="large" color={theme.colors.OjenjiMid} />
             <Text
               style={{
                 textAlign: 'center',
@@ -146,7 +146,7 @@ export default function UserRegister({navigation, route}) {
         </Modal>
       </Portal>
 
-      <StatusBar backgroundColor="#c40900ff" />
+      <StatusBar backgroundColor={theme.colors.OjenjiMid} />
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{marginBottom: 64}}>
@@ -244,7 +244,7 @@ export default function UserRegister({navigation, route}) {
 
           <Button
             mode="contained"
-            buttonColor={theme.colors.tmRed}
+            buttonColor={theme.colors.OjenjiMid}
             style={{height: 50, borderRadius: 50, justifyContent: 'center'}}
             onPress={registerButtonHandler}>
             <Text style={{fontFamily: 'Montserrat-Medium'}}>Register</Text>
@@ -259,7 +259,7 @@ export default function UserRegister({navigation, route}) {
               <Text
                 style={{
                   textAlign: 'center',
-                  color: theme.colors.tmRed,
+                  color: theme.colors.OjenjiMid,
                   fontFamily: 'Montserrat-Medium',
                 }}>
                 {'Login'}

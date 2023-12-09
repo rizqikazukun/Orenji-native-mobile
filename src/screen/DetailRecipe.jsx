@@ -200,7 +200,7 @@ export default function DetailRecipe({navigation, route}) {
             setSnackMessage('');
           },
         }}>
-        <Text style={{color: theme.colors.tmRed}}>{snackMessage}</Text>
+        <Text style={{color: theme.colors.OjenjiMid}}>{snackMessage}</Text>
       </Snackbar>
 
       <Portal>
@@ -211,7 +211,7 @@ export default function DetailRecipe({navigation, route}) {
           }}
           contentContainerStyle={{backgroundColor: 'transparent', padding: 20}}>
           <View style={{justifyContent: 'center', gap: 10}}>
-            <ActivityIndicator size="large" color={theme.colors.tmRed} />
+            <ActivityIndicator size="large" color={theme.colors.OjenjiMid} />
             <Text
               style={{
                 textAlign: 'center',
@@ -224,7 +224,7 @@ export default function DetailRecipe({navigation, route}) {
         </Modal>
       </Portal>
 
-      <StatusBar backgroundColor="#c40900ff" />
+      <StatusBar backgroundColor={theme.colors.OjenjiMid} />
       {loading ? (
         <View
           style={{
@@ -234,7 +234,7 @@ export default function DetailRecipe({navigation, route}) {
             alignContent: 'center',
           }}>
           <View style={{justifyContent: 'center', gap: 10}}>
-            <ActivityIndicator size="large" color={theme.colors.tmRed} />
+            <ActivityIndicator size="large" color={theme.colors.OjenjiMid} />
             <Text
               style={{
                 textAlign: 'center',
@@ -378,7 +378,7 @@ export default function DetailRecipe({navigation, route}) {
 
                 <Button
                   title="send"
-                  color={theme.colors.tmRed}
+                  color={theme.colors.OjenjiMid}
                   onPress={commentHandler}
                 />
               </View>

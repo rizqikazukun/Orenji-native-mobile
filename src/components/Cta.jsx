@@ -45,7 +45,7 @@ export default function Cta({navigation}) {
             style={{
               fontFamily: 'Montserrat-Bold',
               textAlign: 'center',
-              color: theme.colors.tmRed,
+              color: theme.colors.OjenjiMid,
             }}>
             Login
           </Text>
