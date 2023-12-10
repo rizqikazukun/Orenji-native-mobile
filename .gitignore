@@ -64,3 +64,6 @@ yarn-error.log
 
 # testing
 /coverage
+
+# Firebase Credential
+google-services.json
