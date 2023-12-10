@@ -3,7 +3,7 @@
  * @format
  */
 
-import {AppRegistry} from 'react-native';
+import {AppRegistry, Alert, PermissionsAndroid} from 'react-native';
 import HomeScreen from './src/screen/HomeScreen';
 import {name as appName} from './app.json';
 import * as React from 'react';
@@ -18,6 +18,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import * as Icons from 'react-native-feather';
+import messaging from '@react-native-firebase/messaging';
 
 const theme = {
   ...DefaultTheme,
@@ -129,7 +130,63 @@ function TabNavigator() {
   );
 }
 
+const requestUserPermission = async () => {
+  const authStatus = await messaging().requestPermission();
+  const authAndroid = await PermissionsAndroid.request(
+    PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+  );
+
+  const enabled =
+    authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+    authStatus === messaging.AuthorizationStatus.PROVISIONAL ||
+    authAndroid === 'granted' ||
+    authAndroid === 'never_ask_again';
+
+  if (enabled) {
+    console.log('Authorization IOS:', authStatus);
+    console.log('Authorization Android:', authAndroid);
+
+    const token = await messaging().getToken();
+    console.log({'Device Token': token});
+  }
+};
+
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  console.log('Message handled in the background!', remoteMessage);
+});
+
 export default function Main() {
+  React.useEffect(() => {
+    requestUserPermission();
+
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          console.log(
+            'Notification caused app to open from quit state:',
+            remoteMessage,
+          );
+        }
+      });
+
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage.notification,
+      );
+    });
+
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert(
+        remoteMessage?.notification?.title,
+        remoteMessage?.notification?.body,
+      );
+    });
+
+    return unsubscribe;
+  }, []);
+
   return (
     <NavigationContainer>
       <PaperProvider theme={theme}>
