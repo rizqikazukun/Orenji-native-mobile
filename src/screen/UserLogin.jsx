@@ -31,6 +31,7 @@ import ProfileHeader from '../components/ProfileHeader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {backendUrl} from '../config';
+import {TabActions} from '@react-navigation/native';
 
 export default function UserLogin({navigation}) {
   const theme = useTheme();
@@ -57,23 +58,27 @@ export default function UserLogin({navigation}) {
       await AsyncStorage.setItem('token', `Bearer ${request.data.token}`);
       await AsyncStorage.setItem('user', JSON.stringify(request.data.data));
 
-      navigation.navigate('Home');
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Home'}, {name: 'Profile'}],
+      });
       // console.log(await AsyncStorage.getItem('token'));
       // console.log(await AsyncStorage.getItem('user'));
     } catch (err) {
+      // console.log(err.response.data);
       if (err.response.status === 422) {
         setSnackMessage(String(err.response.data.message));
         setVisible(true);
       }
 
       if (err.response.status === 401) {
-        setSnackMessage('Wrong Password');
+        setSnackMessage(String(err.response.data.message));
         setVisible(true);
         return;
       }
 
       if (err.response.status === 404) {
-        setSnackMessage('User Not Found');
+        setSnackMessage(String(err.response.data.massage));
         setVisible(true);
         return;
       }

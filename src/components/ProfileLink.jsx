@@ -1,25 +1,7 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import * as Icons from 'react-native-feather';
-import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  Dimensions,
-  useWindowDimensions,
-  ImageBackground,
-  Image,
-  TouchableWithoutFeedback,
-  ActivityIndicator,
-  TouchableHighlight,
-  TouchableOpacity,
-  TouchableNativeFeedback,
-  Button,
-} from 'react-native';
+import {StyleSheet, Text, View, TouchableNativeFeedback} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ProfileLink({
@@ -50,7 +32,10 @@ export default function ProfileLink({
         if (logout) {
           await AsyncStorage.removeItem('user');
           await AsyncStorage.removeItem('token');
-          navigation.navigate('Home');
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'Home'}, {name: 'Profile'}],
+          });
         } else {
           navigation.navigate(navigationLink);
         }

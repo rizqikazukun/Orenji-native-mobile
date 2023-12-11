@@ -38,7 +38,7 @@ export default function ScreenTemplate({navigation, route}) {
 
   const checkAuth = async () => {
     try {
-      console.log('loading');
+      // console.log('loading');
       const getUser = await AsyncStorage.getItem('user');
       const getToken = await AsyncStorage.getItem('token');
       if (getUser && getToken) {
@@ -48,7 +48,7 @@ export default function ScreenTemplate({navigation, route}) {
     } catch (error) {
       //
     } finally {
-      console.log('finish');
+      // console.log('finish');
     }
   };
 
