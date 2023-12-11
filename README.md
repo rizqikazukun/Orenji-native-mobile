@@ -1,79 +1,32 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Orenji React Native Mobile
 
-# Getting Started
+![logo](./docs/pictures/logo-w-slogan.png)  
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+Halo selamat datang di repo project ini, project ini adalah versi mobole dari web mama recipe, Mama Recipe adalah website untuk melihat, membuat, dan membagikan resep. ada juga resep yang disediakan oleh saya selaku developernya hehe, meskipun begitu resep dijamin valid, ragu? boleh dicoba.
 
-## Step 1: Start the Metro Server
+Developer : Rizqi Pratama  
+Versi Web : <https://recipes-web-fe.vercel.app>
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## How to run & Build
 
-To start Metro, run the following command from the _root_ of your React Native project:
+1. Setup the environment  
+   > This built using React Native 0.72, follow [this link](https://reactnative.dev/docs/0.72/environment-setup?guide=native&platform=android), to see the setup.  
+   > Please Use [JDK 17](https://www.oracle.com/java/technologies/downloads/#java17) to run and build the app.
 
-```bash
-# using npm
-npm start
+2. Setup the Backend  
+   > Goto [this repo](https://github.com/rizqikazukun/mama-recipe-web-be) for the backend.  
+   > then put the backend URL into ``./src/config/index.js`` file
 
-# OR using Yarn
-yarn start
-```
+3. Setup Firebase (For App Notification).
+   > then put the ``google-services.json`` into ``/android/app/{put-here}``  
+   > I am not provide this because it's credential.
 
-## Step 2: Start your Application
+4. Then follow command below to run
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+   ```shell
+   yarn install   # this is for installing the dependencies.
+   yarn start     # run with this command after then follow 
+                  # instruction that appear on the terminal
+   ```
 
-### For Android
-
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## Screenshoot
