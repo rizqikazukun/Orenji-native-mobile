@@ -19,6 +19,7 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import {createStackNavigator} from '@react-navigation/stack';
 import * as Icons from 'react-native-feather';
 import messaging from '@react-native-firebase/messaging';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const theme = {
   ...DefaultTheme,
@@ -148,6 +149,12 @@ const requestUserPermission = async () => {
 
     const token = await messaging().getToken();
     console.log({'Device Token': token});
+
+    const getDeviceId = await AsyncStorage.getItem('device_id');
+
+    if (!getDeviceId) {
+      await AsyncStorage.setItem('device_id', token);
+    }
   }
 };
 

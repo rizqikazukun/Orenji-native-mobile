@@ -30,6 +30,7 @@ import BottomNavbar from '../components/BottomNavbar';
 import ProfileHeader from '../components/ProfileHeader';
 import axios from 'axios';
 import {backendUrl} from '../config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function UserRegister({navigation, route}) {
   const theme = useTheme();
@@ -46,50 +47,53 @@ export default function UserRegister({navigation, route}) {
 
   React.useEffect(() => {}, [isLoading]);
 
-  const registerButtonHandler = () => {
-    setIsLoading(true);
+  const registerButtonHandler = async () => {
+    try {
+      setIsLoading(true);
 
-    if (password !== passwordc) {
-      setIsLoading(false);
-      setSnackMessage('Password Not Match');
-      setVisible(true);
-      return;
-    }
-
-    axios({
-      method: 'post',
-      url: `${backendUrl}/user/register`,
-      data: {
-        firstName,
-        lastName,
-        email,
-        password,
-      },
-    })
-      .then(() => {
-        setSnackMessage('Register Success');
-        setVisible(true);
-        navigation.navigate('UserLogin');
-      })
-      .catch(err => {
-        if (err.response.status === 422) {
-          setSnackMessage(String(err.response.data.message));
-          setVisible(true);
-        }
-
-        if (err.response.status === 409) {
-          setSnackMessage(String(err.response.data.massage));
-          setVisible(true);
-        }
-
-        if (err.response.status === 500) {
-          setSnackMessage(String(err.response.data.massage));
-          setVisible(true);
-        }
-      })
-      .finally(() => {
+      if (password !== passwordc) {
         setIsLoading(false);
+        setSnackMessage('Password Not Match');
+        setVisible(true);
+        return;
+      }
+
+      const getDeviceId = await AsyncStorage.getItem('device_id');
+
+      await axios({
+        method: 'post',
+        url: `${backendUrl}/user/register`,
+        data: {
+          firstName,
+          lastName,
+          email,
+          password,
+          device_id: getDeviceId,
+        },
       });
+
+      setSnackMessage('Register Success');
+      setVisible(true);
+      navigation.navigate('UserLogin');
+    } catch (err) {
+      console.log(err);
+      if (err.response.status === 422) {
+        setSnackMessage(String(err.response.data.message));
+        setVisible(true);
+      }
+
+      if (err.response.status === 409) {
+        setSnackMessage(String(err.response.data.massage));
+        setVisible(true);
+      }
+
+      if (err.response.status === 500) {
+        setSnackMessage(String(err.response.data.massage));
+        setVisible(true);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const styles = StyleSheet.create({

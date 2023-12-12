@@ -47,7 +47,7 @@ export default function HomeScreen({navigation}) {
       const list = await axios.get(`${backendUrl}/home/list`);
       setPopularRecipes(list.data.data);
     } catch (error) {
-      console.error(error);
+      console.error(error.response.data);
     } finally {
       setLoading(false);
     }
