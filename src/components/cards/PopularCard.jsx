@@ -22,16 +22,6 @@ export default function PopularCard({title, source}) {
         borderRadius: 10,
         marginVertical: 12,
         marginHorizontal: 5,
-      }}
-      style={{
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 3,
-        },
-        shadowOpacity: 0.5,
-        shadowRadius: 2,
-        elevation: 4,
       }}>
       <View
         style={{
