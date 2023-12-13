@@ -63,7 +63,7 @@ export default function DetailRecipe({navigation, route}) {
   const [snackMessage, setSnackMessage] = React.useState('');
   const [visible, setVisible] = React.useState(false);
 
-  const initScreen = async url => {
+  const initialize = async url => {
     try {
       setLoading(true);
 
@@ -115,7 +115,7 @@ export default function DetailRecipe({navigation, route}) {
       });
 
       setNewComment('');
-      initScreen();
+      initialize();
     } catch (error) {
       console.log(error.response.status);
       if (
@@ -149,7 +149,7 @@ export default function DetailRecipe({navigation, route}) {
   };
 
   React.useEffect(() => {
-    initScreen();
+    initialize();
   }, []);
 
   const styles = StyleSheet.create({

@@ -23,6 +23,7 @@ import {
   Image,
   TouchableWithoutFeedback,
   ActivityIndicator,
+  TouchableNativeFeedback,
 } from 'react-native';
 
 import BagdeCategory from '../components/BagdeCategory';
@@ -30,7 +31,6 @@ import HeatCard from '../components/cards/HeatCard';
 import PopularCard from '../components/cards/PopularCard';
 import axios from 'axios';
 import {backendUrl} from '../config';
-import BottomNavbar from '../components/BottomNavbar';
 
 export default function HomeScreen({navigation}) {
   const [search, setSearch] = React.useState('');
@@ -41,7 +41,7 @@ export default function HomeScreen({navigation}) {
   const [newRecipes, setNewRecipes] = React.useState(undefined);
   const [loading, setLoading] = React.useState(false);
 
-  const initScreen = async () => {
+  const initialize = async () => {
     try {
       setLoading(true);
       const list = await axios.get(`${backendUrl}/home/list`);
@@ -55,7 +55,7 @@ export default function HomeScreen({navigation}) {
 
   React.useEffect(() => {
     if (popularRecipes === undefined) {
-      initScreen();
+      initialize();
     }
   }, [popularRecipes]);
 
@@ -68,13 +68,6 @@ export default function HomeScreen({navigation}) {
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: 'white',
-    },
-    searchbar: {
-      display: 'flex',
-      alignItems: 'center',
-      paddingHorizontal: 15,
-      marginBottom: 20,
-      marginTop: 150,
     },
     h2_black: {
       color: theme.colors.OjenjiMid,
@@ -101,54 +94,57 @@ export default function HomeScreen({navigation}) {
       ) : (
         <View>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View
+            <ImageBackground
               style={{
-                height: 220,
-                width: width,
-                position: 'absolute',
-              }}>
-              <ImageBackground
-                style={{
-                  height: '100%',
-                }}
-                imageStyle={{
-                  borderBottomRightRadius: 20,
-                  borderBottomLeftRadius: 20,
-                }}
-                source={require('../assets/images/header.png')}>
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    paddingVertical: theme.padding.containerHorizontal,
-                    paddingHorizontal: 28,
-                    justifyContent: 'flex-end',
-                  }}>
-                  <Image
-                    style={{width: 160, objectFit: 'contain'}}
-                    source={require('../assets/images/logo-w-slogan.png')}
-                  />
-                </View>
-              </ImageBackground>
-            </View>
-
-            <View style={styles.searchbar}>
-              <Searchbar
-                iconColor={theme.colors.gray20}
-                placeholderTextColor={theme.colors.gray20}
-                placeholder="Search Pasta, Bread, etc"
-                onChangeText={query => setSearch(query)}
-                allowFontScaling={true}
-                inputStyle={{fontFamily: 'Lato-Regular', fontSize: 14}}
-                style={{backgroundColor: '#fff', borderRadius: 30}}
+                height: 240,
+                flexDirection: 'column',
+                paddingHorizontal: 20,
+                paddingVertical: 20,
+                justifyContent: 'space-between',
+              }}
+              imageStyle={{
+                borderBottomRightRadius: 14,
+                borderBottomLeftRadius: 14,
+                objectFit: 'scale-down',
+              }}
+              source={require('../assets/images/header.png')}>
+              <Image
+                style={{width: 160, height: 100, objectFit: 'scale-down'}}
+                source={require('../assets/images/logo-w-slogan.png')}
               />
-            </View>
+
+              <View style={styles.searchbar}>
+                <Searchbar
+                  // onSubmitEditing={navigation.navigate('Explore')}
+                  iconColor={theme.colors.gray20}
+                  placeholderTextColor={theme.colors.gray20}
+                  placeholder="Search Pasta, Bread, etc"
+                  onChangeText={query => setSearch(query)}
+                  allowFontScaling={true}
+                  inputStyle={{fontFamily: 'Lato-Regular', fontSize: 14}}
+                  style={{backgroundColor: '#fff', borderRadius: 14}}
+                  onSubmitEditing={() => navigation.navigate('Explore')}
+                />
+              </View>
+            </ImageBackground>
 
             {/* Popular Section */}
             <View
               style={{
                 paddingHorizontal: theme.padding.containerHorizontal,
                 marginTop: 12,
+                backgroundColor: 'white',
+                borderRadius: 14,
+
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 1,
+                },
+                shadowOpacity: 0.22,
+                shadowRadius: 2.22,
+
+                elevation: 3,
               }}>
               <View style={{padding: 5}}>
                 <Text style={styles.h2_black}>Popular</Text>
@@ -163,7 +159,11 @@ export default function HomeScreen({navigation}) {
                   <TouchableWithoutFeedback
                     key={index}
                     onPress={() =>
-                      navigation.navigate('Detail Recipe', recipe)
+                      navigation.navigate('Explore', {
+                        screen: 'Detail Recipe',
+                        params: recipe,
+                        initial: false,
+                      })
                     }>
                     <View>
                       <PopularCard title={recipe.title} source={recipe.image} />
@@ -175,7 +175,22 @@ export default function HomeScreen({navigation}) {
 
             {/* Category Section */}
             <View
-              style={{paddingHorizontal: theme.padding.containerHorizontal}}>
+              style={{
+                marginVertical: 10,
+                paddingHorizontal: theme.padding.containerHorizontal,
+                borderRadius: 14,
+
+                backgroundColor: 'white',
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 1,
+                },
+                shadowOpacity: 0.22,
+                shadowRadius: 2.22,
+
+                elevation: 3,
+              }}>
               <View style={{padding: 5}}>
                 <Text style={styles.h2_black}>Category</Text>
               </View>
@@ -217,7 +232,21 @@ export default function HomeScreen({navigation}) {
 
             {/* Heat's Section */}
             <View
-              style={{paddingHorizontal: theme.padding.containerHorizontal}}>
+              style={{
+                paddingHorizontal: theme.padding.containerHorizontal,
+                borderRadius: 14,
+
+                backgroundColor: 'white',
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 1,
+                },
+                shadowOpacity: 0.22,
+                shadowRadius: 2.22,
+
+                elevation: 3,
+              }}>
               <View style={{padding: 5}}>
                 <Text style={styles.h2_black}>Heat's 🔥</Text>
                 <Text style={styles.sub_h2}>Checkout this week heat's</Text>
@@ -228,13 +257,17 @@ export default function HomeScreen({navigation}) {
                   <TouchableWithoutFeedback
                     key={index}
                     onPress={() =>
-                      navigation.navigate('Detail Recipe', recipe)
+                      navigation.navigate('Explore', {
+                        screen: 'Detail Recipe',
+                        params: recipe,
+                        initial: false,
+                      })
                     }>
                     <View>
                       <HeatCard
                         source={recipe.image}
                         title={recipe.title}
-                        category={recipe.category?.join(', ')}
+                        category={recipe.category}
                         rating={recipe.rating}
                       />
                     </View>
