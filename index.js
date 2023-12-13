@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
 /**
  * @format
@@ -20,6 +21,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import * as Icons from 'react-native-feather';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ExploreScreen from './src/screen/ExploreScreen';
 
 const theme = {
   ...DefaultTheme,
@@ -30,6 +32,7 @@ const theme = {
     tmBlack: '#3F3A3A',
     gray5: '#F8F8F8',
     gray10: '#EFEFEF',
+    gray15: '#DEDEDE',
     gray20: '#B6B6B6',
     gray40: '#666666',
     whiteT70: '#f5f5f5',
@@ -65,6 +68,7 @@ function ProfileNav() {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="index" component={UserProfile} />
+
       <Stack.Screen
         name="UserLogin"
         component={UserLogin}
@@ -79,6 +83,7 @@ function ProfileNav() {
           headerTitleStyle: {fontFamily: 'Montserrat-Bold'},
         }}
       />
+
       <Stack.Screen
         name="UserRegister"
         component={UserRegister}
@@ -98,6 +103,23 @@ function ProfileNav() {
   );
 }
 
+function ExploreNav() {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="index" component={ExploreScreen} />
+      <Stack.Screen
+        name="Detail Recipe"
+        component={DetailRecipe}
+        options={{
+          headerTitleAlign: 'center',
+          headerShown: true,
+          headerTitleStyle: {fontFamily: 'Montserrat-Bold'},
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 function TabNavigator() {
   return (
     <Tab.Navigator
@@ -106,6 +128,12 @@ function TabNavigator() {
       sceneAnimationType="shifting"
       activeColor={theme.colors.OjenjiMid}
       inactiveColor={theme.colors.gray20}
+      barStyle={{
+        borderTopColor: theme.colors.gray15,
+        borderTopWidth: 2,
+        height: 64,
+        justifyContent: 'center',
+      }}
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
@@ -118,6 +146,13 @@ function TabNavigator() {
         component={HomeNav}
         options={{
           tabBarIcon: ({color}) => <Icons.Home color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Explore"
+        component={ExploreNav}
+        options={{
+          tabBarIcon: ({color}) => <Icons.Compass color={color} />,
         }}
       />
       <Tab.Screen
