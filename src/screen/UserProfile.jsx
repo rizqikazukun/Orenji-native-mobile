@@ -30,7 +30,7 @@ import ProfileLink from '../components/ProfileLink';
 import ProfileHeader from '../components/ProfileHeader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function ScreenTemplate({navigation, route}) {
+export default function UserProfile({navigation, route}) {
   const theme = useTheme();
 
   const [user, setUser] = React.useState(undefined);
@@ -79,8 +79,16 @@ export default function ScreenTemplate({navigation, route}) {
             <ProfileHeader
               text1={`Hi, ${user.first_name}`}
               text2="Have a Day!"
+              photo={user?.photo_profile}
             />
             <View style={styles.LinkBody}>
+              <ProfileLink
+                title="Account Setting"
+                navigation={navigation}
+                navigationLink="AccountSetting"
+                params={{user, token}}
+                icon={<Icons.Settings color="black" height={18} width={18} />}
+              />
               <ProfileLink
                 title="Logout"
                 navigation={navigation}
