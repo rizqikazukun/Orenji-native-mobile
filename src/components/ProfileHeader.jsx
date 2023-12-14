@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import * as Icons from 'react-native-feather';
@@ -21,7 +22,7 @@ import {
 } from 'react-native';
 import {useTheme} from 'react-native-paper';
 
-export default function ProfileHeader({text1, text2}) {
+export default function ProfileHeader({text1, text2, photo}) {
   const theme = useTheme();
 
   const styles = StyleSheet.create({
@@ -56,10 +57,20 @@ export default function ProfileHeader({text1, text2}) {
     },
   });
 
+  console.log(photo);
   return (
     <View style={styles.headerBody}>
       <View style={styles.headerProfile}>
-        <Icons.User color={theme.colors.OjenjiMid} height={80} width={80} />
+        {!(photo === undefined) ? (
+          <Image
+            source={{uri: photo}}
+            height={100}
+            width={100}
+            style={{borderRadius: 80}}
+          />
+        ) : (
+          <Icons.User color={theme.colors.OjenjiMid} height={80} width={80} />
+        )}
       </View>
       <HeaderMessage styles={styles} text1={text1} text2={text2} />
     </View>

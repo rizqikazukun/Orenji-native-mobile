@@ -34,10 +34,10 @@ export default function HeatCard({source, title, category, rating, style}) {
         width: 0,
         height: 1,
       },
-      shadowOpacity: 0.22,
-      shadowRadius: 2.22,
+      shadowOpacity: 1,
+      shadowRadius: 1.41,
 
-      elevation: 3,
+      elevation: 2,
     },
   });
 

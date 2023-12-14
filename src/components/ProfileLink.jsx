@@ -10,6 +10,7 @@ export default function ProfileLink({
   title,
   icon,
   logout,
+  params,
 }) {
   const styles = StyleSheet.create({
     outerBody: {
@@ -26,6 +27,10 @@ export default function ProfileLink({
     },
   });
 
+  if (params === undefined) {
+    params = {};
+  }
+
   return (
     <TouchableNativeFeedback
       onPress={async () => {
@@ -37,7 +42,7 @@ export default function ProfileLink({
             routes: [{name: 'Home'}, {name: 'Profile'}],
           });
         } else {
-          navigation.navigate(navigationLink);
+          navigation.navigate(navigationLink, params);
         }
       }}>
       <View style={styles.outerBody}>
