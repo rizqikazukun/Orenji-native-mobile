@@ -339,6 +339,29 @@ export default function UserProfileAccountSetting({ navigation, route }) {
             </View>
           </TouchableOpacity>
         </View>
+
+        <View id="change-photo" style={{...styles.cards, flexDirection: 'column'}}>
+          <Text style={{flexShrink: 1, textAlign: 'center'}}>
+            Sorry, Application is under development, some change may not change real time.
+            If you have been made a changes, please press refresh button.
+          </Text>
+          <TouchableOpacity onPress={() => {
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Profile'}],
+            });
+          }}>
+            <View
+              style={{
+                padding: 10,
+                borderRadius: 20,
+                backgroundColor: theme.colors.OjenjiMid,
+              }}>
+              <Text style={styles.submitButton}>Refresh</Text>
+            </View>
+          </TouchableOpacity>
+
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
