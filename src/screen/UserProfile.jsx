@@ -29,6 +29,8 @@ import * as Icons from 'react-native-feather';
 import ProfileLink from '../components/ProfileLink';
 import ProfileHeader from '../components/ProfileHeader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {backendUrl} from '../config';
 
 export default function UserProfile({navigation, route}) {
   const theme = useTheme();
@@ -41,9 +43,19 @@ export default function UserProfile({navigation, route}) {
       // console.log('loading');
       const getUser = await AsyncStorage.getItem('user');
       const getToken = await AsyncStorage.getItem('token');
+
       if (getUser && getToken) {
-        setUser(JSON.parse(getUser));
-        setToken(getToken);
+        const getDetailProfile = await axios({
+          url: `${backendUrl}/user/profile`,
+          headers: {
+            Authorization: getToken,
+          },
+        });
+
+        if (getDetailProfile.data.status === 200) {
+          setUser({...JSON.parse(getUser), ...getDetailProfile.data.data});
+          setToken(getToken);
+        }
       }
     } catch (error) {
       //

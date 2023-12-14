@@ -14,18 +14,47 @@ import {
 import DocumentPicker from 'react-native-document-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useTheme, TextInput} from 'react-native-paper';
+import axios from 'axios';
+import {backendUrl} from '../config'
 
 export default function UserProfileAccountSetting({navigation, route}) {
-  const [userLatest, setUser] = React.useState(undefined);
-  const [tokenLatest, setToken] = React.useState(undefined);
+  
   const [profilePicture, setProfilePicture] = React.useState(undefined);
-
-  const [fname, setFname] = React.useState('');
+  const [first_name, setFname] = React.useState('');
+  const [last_name, setLname] = React.useState('')
+  const [phone_number, setPhonenumber] = React.useState('')
 
   const theme = useTheme();
   const {user, token} = route.params;
 
-  console.log(route.params);
+  const handlerChangeInfo = async () => {
+    try {
+      await axios({
+        method: 'put',
+        url: `${backendUrl}/user/profile/edit`,
+        data: {
+          first_name,
+          last_name,
+          phone_number
+        },
+        headers: {
+          Authorization: token
+        }
+      })
+
+      const getDetailProfile = await axios({
+        url: `${backendUrl}/user/profile`,
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      await AsyncStorage.setItem('user', JSON.stringify({...user, ...getDetailProfile.data.data}))
+      alert('Success, Info Updated')
+    } catch (error) {
+      alert(JSON.stringify(error.response.data.message))
+    }
+  }
 
   const photoPicker = async () => {
     try {
@@ -43,36 +72,14 @@ export default function UserProfileAccountSetting({navigation, route}) {
       const status = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
       );
-      console.log(status);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const checkAuth = async () => {
-    try {
-      // console.log('loading');
-      const getUser = await AsyncStorage.getItem('user');
-      const getToken = await AsyncStorage.getItem('token');
-
-      if (getUser && getToken) {
-        setUser(JSON.parse(getUser));
-        setToken(getToken);
-      }
-    } catch (error) {
-      //
-    } finally {
-      // console.log('finish');
-    }
-  };
-
   React.useEffect(() => {
     requestPermission();
-
-    if (!user && !token) {
-      checkAuth();
-    }
-  }, [fname, token, user]);
+  }, []);
 
   const styles = {
     cards: {
@@ -178,6 +185,7 @@ export default function UserProfileAccountSetting({navigation, route}) {
             mode="outlined"
             label="Last Name"
             defaultValue={user.last_name}
+            onChangeText={text => setLname(text)}
             outlineColor="gray"
             inputMode="text"
             theme={{
@@ -194,7 +202,8 @@ export default function UserProfileAccountSetting({navigation, route}) {
           <TextInput
             mode="outlined"
             label="Phone Number"
-            defaultValue={user.phone}
+            defaultValue={user.phone_number}
+            onChangeText={text => setPhonenumber(text)}
             outlineColor="gray"
             inputMode="numeric"
             theme={{
@@ -208,7 +217,7 @@ export default function UserProfileAccountSetting({navigation, route}) {
             }}
           />
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handlerChangeInfo}>
             <View
               style={{
                 padding: 10,
