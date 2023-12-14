@@ -139,6 +139,7 @@ function ExploreNav() {
         name="ExploreCategory"
         component={ExploreCategoryScreen}
         options={{
+          headerTitle: 'Category',
           headerTitleAlign: 'center',
           headerShown: true,
           headerTitleStyle: {fontFamily: 'Montserrat-Bold'},

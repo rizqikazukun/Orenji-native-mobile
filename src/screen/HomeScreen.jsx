@@ -24,6 +24,7 @@ import {
   TouchableWithoutFeedback,
   ActivityIndicator,
   TouchableNativeFeedback,
+  TouchableOpacity,
 } from 'react-native';
 
 import BagdeCategory from '../components/BagdeCategory';
@@ -81,7 +82,7 @@ export default function HomeScreen({navigation}) {
   });
 
   return (
-    <SafeAreaView style={{backgroundColor: 'white', flexGrow: 1}}>
+    <SafeAreaView style={{flexGrow: 1}}>
       <StatusBar backgroundColor={theme.colors.OjenjiMid} />
 
       <Portal>
@@ -202,8 +203,7 @@ export default function HomeScreen({navigation}) {
           {/* Category Section */}
           <View
             style={{
-              marginVertical: 10,
-              marginHorizontal: 10,
+              margin: 10,
               paddingHorizontal: theme.padding.containerHorizontal,
               borderRadius: 14,
 
@@ -247,12 +247,19 @@ export default function HomeScreen({navigation}) {
                   icon: require('../assets/images/c-salty.png'),
                   title: 'Snack',
                 },
-              ].map((category, index) => (
-                <BagdeCategory
+              ].map((foodCategory, index) => (
+                <TouchableOpacity
                   key={index}
-                  imageSource={category.icon}
-                  title={category.title}
-                />
+                  onPress={() =>
+                    navigation.navigate('ExploreCategory', {
+                      foodCategory,
+                    })
+                  }>
+                  <BagdeCategory
+                    imageSource={foodCategory.icon}
+                    title={foodCategory.title}
+                  />
+                </TouchableOpacity>
               ))}
             </View>
           </View>

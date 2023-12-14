@@ -1,4 +1,4 @@
-/* eslint-disable no-shadow */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-unused-vars */
 /**
@@ -59,15 +59,6 @@ export default function ExploreCategoryScreen({navigation, route}) {
   const [snackVisible, setSnackVisible] = React.useState(false);
 
   const styles = StyleSheet.create({
-    loadingScreen: {
-      height,
-      width,
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'white',
-    },
     searchbar: {
       display: 'flex',
       alignItems: 'center',
@@ -91,7 +82,7 @@ export default function ExploreCategoryScreen({navigation, route}) {
     },
     h2_black: {
       color: theme.colors.OjenjiMid,
-      fontFamily: 'Montserrat-Black',
+      fontFamily: 'Montserrat-Bold',
       fontSize: 20,
     },
     sub_h2: {
@@ -115,7 +106,7 @@ export default function ExploreCategoryScreen({navigation, route}) {
     try {
       let url = `${backendUrl}/recipes/search?title=${search}`;
       url += `&page=1&amount=${amount}&sortBy=${sortBy}&sort=${sort}`;
-      category === 'None' ? '' : (url += `&category=${category}`);
+      url += `&category=${route.params.foodCategory.title}`;
 
       const makeSearch = await axios({
         method: 'get',
@@ -139,7 +130,7 @@ export default function ExploreCategoryScreen({navigation, route}) {
     try {
       let url = `${backendUrl}/recipes/search?title=${search}`;
       url += `&page=${page + 1}&amount=${amount}&sortBy=${sortBy}&sort=${sort}`;
-      category === 'None' ? '' : (url += `&category=${category}`);
+      url += `&category=${route.params.foodCategory.title}`;
 
       const makeSearch = await axios({
         method: 'get',
@@ -158,8 +149,8 @@ export default function ExploreCategoryScreen({navigation, route}) {
   };
 
   React.useEffect(() => {
-    console.log(snackVisible);
-  }, [snackVisible]);
+    handleSearch();
+  }, []);
 
   return (
     <SafeAreaView style={{flexGrow: 1}}>
@@ -279,80 +270,48 @@ export default function ExploreCategoryScreen({navigation, route}) {
                     }}
                   />
                 </View>
-
-                <View style={styles.optionBody}>
-                  <Text>Category</Text>
-                  <SelectDropdown
-                    buttonStyle={styles.optionButton}
-                    data={dropdownCategory}
-                    defaultValue={category}
-                    onSelect={(selectedItem, index) => {
-                      setCategory(selectedItem);
-                    }}
-                  />
-                </View>
               </View>
             )}
           </View>
 
-          {searchResult.length !== 0 ? null : (
+          <View
+            style={{
+              marginVertical: 10,
+              paddingHorizontal: theme.padding.containerHorizontal,
+              paddingVertical: 10,
+              borderRadius: 14,
+
+              backgroundColor: 'white',
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 1,
+              },
+              shadowOpacity: 0.22,
+              shadowRadius: 2.22,
+
+              elevation: 3,
+            }}>
             <View
               style={{
-                marginVertical: 10,
-                paddingHorizontal: theme.padding.containerHorizontal,
-                borderRadius: 14,
-
-                backgroundColor: 'white',
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 1,
-                },
-                shadowOpacity: 0.22,
-                shadowRadius: 2.22,
-
-                elevation: 3,
+                padding: 5,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
               }}>
-              <View style={{padding: 5}}>
+              <View>
                 <Text style={styles.h2_black}>Category</Text>
+                <Text style={styles.h2_black}>
+                  {route.params.foodCategory.title}
+                </Text>
               </View>
-
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-evenly',
-                  marginBottom: 20,
-                  marginTop: 15,
-                }}>
-                {[
-                  {
-                    icon: require('../assets/images/c-spicy.png'),
-                    title: 'Spicy',
-                  },
-                  {
-                    icon: require('../assets/images/c-curry.png'),
-                    title: 'Curry',
-                  },
-                  {
-                    icon: require('../assets/images/c-vegie.png'),
-                    title: 'Vegie',
-                  },
-                  {
-                    icon: require('../assets/images/c-salty.png'),
-                    title: 'Salty',
-                  },
-                ].map((category, index) => (
-                  <TouchableOpacity key={index}>
-                    <BagdeCategory
-                      imageSource={category.icon}
-                      title={category.title}
-                    />
-                  </TouchableOpacity>
-                ))}
+              <View>
+                <Image
+                  source={route.params.foodCategory.icon}
+                  style={{height: 64, width: 64}}
+                />
               </View>
             </View>
-          )}
+          </View>
 
           <View
             style={{

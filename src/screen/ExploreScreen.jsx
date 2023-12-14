@@ -341,15 +341,18 @@ export default function ExploreScreen({navigation}) {
                   icon: require('../assets/images/c-salty.png'),
                   title: 'Snack',
                 },
-              ].map((cat, index) => (
+              ].map((foodCategory, index) => (
                 <TouchableOpacity
                   key={index}
                   onPress={() =>
                     navigation.navigate('ExploreCategory', {
-                      category: cat.title,
+                      foodCategory,
                     })
                   }>
-                  <BagdeCategory imageSource={cat.icon} title={cat.title} />
+                  <BagdeCategory
+                    imageSource={foodCategory.icon}
+                    title={foodCategory.title}
+                  />
                 </TouchableOpacity>
               ))}
             </View>
