@@ -13,19 +13,22 @@ import {
 } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useTheme, TextInput} from 'react-native-paper';
+import { useTheme, TextInput } from 'react-native-paper';
 import axios from 'axios';
-import {backendUrl} from '../config'
+import { backendUrl } from '../config'
 
-export default function UserProfileAccountSetting({navigation, route}) {
-  
+export default function UserProfileAccountSetting({ navigation, route }) {
+
   const [profilePicture, setProfilePicture] = React.useState(undefined);
   const [first_name, setFname] = React.useState('');
   const [last_name, setLname] = React.useState('')
   const [phone_number, setPhonenumber] = React.useState('')
+  const [old_password, setOldpassword] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  const [passwordC, setPasswordc] = React.useState('')
 
   const theme = useTheme();
-  const {user, token} = route.params;
+  const { user, token } = route.params;
 
   const handlerChangeInfo = async () => {
     try {
@@ -49,8 +52,33 @@ export default function UserProfileAccountSetting({navigation, route}) {
         },
       });
 
-      await AsyncStorage.setItem('user', JSON.stringify({...user, ...getDetailProfile.data.data}))
+      await AsyncStorage.setItem('user', JSON.stringify({ ...user, ...getDetailProfile.data.data }))
       alert('Success, Info Updated')
+    } catch (error) {
+      alert(JSON.stringify(error.response.data.message))
+    }
+  }
+
+  const handlerChangePassword = async () => {
+    try {
+      if (password !== passwordC) {
+        alert('Confirmation Password is not match')
+        return
+      } 
+
+      await axios({
+        method: 'put',
+        url: `${backendUrl}/user/profile/update-password-new`,
+        data: {
+          old_password,
+          password
+        },
+        headers: {
+          Authorization: token
+        }
+      })
+
+      alert('Success, Password Updated')
     } catch (error) {
       alert(JSON.stringify(error.response.data.message))
     }
@@ -116,7 +144,7 @@ export default function UserProfileAccountSetting({navigation, route}) {
   };
 
   return (
-    <SafeAreaView style={{flexGrow: 1}}>
+    <SafeAreaView style={{ flexGrow: 1 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View id="change-photo" style={styles.cards}>
           <Text style={styles.cardTitle}>Change Photo</Text>
@@ -127,14 +155,14 @@ export default function UserProfileAccountSetting({navigation, route}) {
               uri: profilePicture
                 ? profilePicture?.uri
                 : user
-                ? user?.photo_profile
-                : 'https://res.cloudinary.com/dwptyupfa/image/upload/v1702351028/default/qypd8uufip0no3st2ukx.jpg',
+                  ? user?.photo_profile
+                  : 'https://res.cloudinary.com/dwptyupfa/image/upload/v1702351028/default/qypd8uufip0no3st2ukx.jpg',
             }}
             style={{
               borderRadius: 150,
             }}
           />
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity onPress={photoPicker}>
               <View
                 style={{
@@ -172,7 +200,7 @@ export default function UserProfileAccountSetting({navigation, route}) {
             inputMode="text"
             theme={{
               roundness: 36,
-              fonts: {regular: {fontFamily: 'Lato-Regular'}},
+              fonts: { regular: { fontFamily: 'Lato-Regular' } },
             }}
             style={{
               backgroundColor: theme.colors.gray5,
@@ -190,7 +218,7 @@ export default function UserProfileAccountSetting({navigation, route}) {
             inputMode="text"
             theme={{
               roundness: 36,
-              fonts: {regular: {fontFamily: 'Lato-Regular'}},
+              fonts: { regular: { fontFamily: 'Lato-Regular' } },
             }}
             style={{
               backgroundColor: theme.colors.gray5,
@@ -208,7 +236,7 @@ export default function UserProfileAccountSetting({navigation, route}) {
             inputMode="numeric"
             theme={{
               roundness: 36,
-              fonts: {regular: {fontFamily: 'Lato-Regular'}},
+              fonts: { regular: { fontFamily: 'Lato-Regular' } },
             }}
             style={{
               backgroundColor: theme.colors.gray5,
@@ -237,12 +265,12 @@ export default function UserProfileAccountSetting({navigation, route}) {
           </TouchableOpacity>
 
           <TextInput
-            // onChangeText={query => setPassword(query)}
+            onChangeText={query => setOldpassword(query)}
             mode="outlined"
             label="Old Passwors"
             secureTextEntry
             outlineColor="gray"
-            theme={{roundness: 36}}
+            theme={{ roundness: 36 }}
             left={<TextInput.Icon icon="form-textbox-password" color="gray" />}
             style={{
               backgroundColor: theme.colors.gray5,
@@ -252,12 +280,12 @@ export default function UserProfileAccountSetting({navigation, route}) {
           />
 
           <TextInput
-            // onChangeText={query => setPassword(query)}
+            onChangeText={query => setPassword(query)}
             mode="outlined"
             label="Password"
             secureTextEntry
             outlineColor="gray"
-            theme={{roundness: 36}}
+            theme={{ roundness: 36 }}
             left={<TextInput.Icon icon="form-textbox-password" color="gray" />}
             style={{
               backgroundColor: theme.colors.gray5,
@@ -267,12 +295,12 @@ export default function UserProfileAccountSetting({navigation, route}) {
           />
 
           <TextInput
-            // onChangeText={query => setPasswordc(query)}
+            onChangeText={query => setPasswordc(query)}
             mode="outlined"
             label="Confirm Password"
             secureTextEntry
             outlineColor="gray"
-            theme={{roundness: 36}}
+            theme={{ roundness: 36 }}
             left={<TextInput.Icon icon="form-textbox-password" color="gray" />}
             style={{
               backgroundColor: theme.colors.gray5,
@@ -281,7 +309,7 @@ export default function UserProfileAccountSetting({navigation, route}) {
             }}
           />
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handlerChangePassword}>
             <View
               style={{
                 padding: 10,
