@@ -30,6 +30,25 @@ export default function UserProfileAccountSetting({ navigation, route }) {
   const theme = useTheme();
   const { user, token } = route.params;
 
+  const handlerChangePhoto = async () => {
+    try {
+      const form = new FormData()
+      form.append('user-photo', profilePicture)
+
+      await axios
+        .post(`${backendUrl}/user/profile/update-photo`, form, {
+          headers: {
+            Authorization: token,
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+
+      alert('Photo Profile Updated')
+    } catch (error) {
+      alert(JSON.stringify(error.response.data.message))
+    }
+  }
+
   const handlerChangeInfo = async () => {
     try {
       await axios({
@@ -64,7 +83,7 @@ export default function UserProfileAccountSetting({ navigation, route }) {
       if (password !== passwordC) {
         alert('Confirmation Password is not match')
         return
-      } 
+      }
 
       await axios({
         method: 'put',
@@ -174,7 +193,7 @@ export default function UserProfileAccountSetting({ navigation, route }) {
                 <Text>Choose Photo</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handlerChangePhoto}>
               <View
                 style={{
                   padding: 10,
