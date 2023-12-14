@@ -251,8 +251,10 @@ export default function HomeScreen({navigation}) {
                 <TouchableOpacity
                   key={index}
                   onPress={() =>
-                    navigation.navigate('ExploreCategory', {
-                      foodCategory,
+                    navigation.navigate('Explore', {
+                      screen: 'ExploreCategory',
+                      params: {foodCategory},
+                      initial: false,
                     })
                   }>
                   <BagdeCategory
