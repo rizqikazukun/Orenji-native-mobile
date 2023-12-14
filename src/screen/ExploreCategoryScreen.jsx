@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-shadow */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-unused-vars */
 /**
@@ -34,7 +34,7 @@ import SelectDropdown from 'react-native-select-dropdown';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import BagdeCategory from '../components/BagdeCategory';
 
-export default function ExploreScreen({navigation}) {
+export default function ExploreCategoryScreen({navigation, route}) {
   const [search, setSearch] = React.useState('');
   const [searchResult, setSearchResult] = React.useState([]);
   const [setting, setSetting] = React.useState(false);
@@ -158,8 +158,8 @@ export default function ExploreScreen({navigation}) {
   };
 
   React.useEffect(() => {
-    handleSearch();
-  }, []);
+    console.log(snackVisible);
+  }, [snackVisible]);
 
   return (
     <SafeAreaView style={{flexGrow: 1}}>
@@ -295,65 +295,64 @@ export default function ExploreScreen({navigation}) {
             )}
           </View>
 
-          <View
-            style={{
-              marginVertical: 10,
-              paddingHorizontal: theme.padding.containerHorizontal,
-              borderRadius: 14,
-
-              backgroundColor: 'white',
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 1,
-              },
-              shadowOpacity: 0.22,
-              shadowRadius: 2.22,
-
-              elevation: 3,
-            }}>
-            <View style={{padding: 5}}>
-              <Text style={styles.h2_black}>Category</Text>
-            </View>
-
+          {searchResult.length !== 0 ? null : (
             <View
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
-                marginBottom: 20,
-                marginTop: 15,
+                marginVertical: 10,
+                paddingHorizontal: theme.padding.containerHorizontal,
+                borderRadius: 14,
+
+                backgroundColor: 'white',
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 1,
+                },
+                shadowOpacity: 0.22,
+                shadowRadius: 2.22,
+
+                elevation: 3,
               }}>
-              {[
-                {
-                  icon: require('../assets/images/c-spicy.png'),
-                  title: 'Dishes',
-                },
-                {
-                  icon: require('../assets/images/c-curry.png'),
-                  title: 'Drink',
-                },
-                {
-                  icon: require('../assets/images/c-vegie.png'),
-                  title: 'Dessert',
-                },
-                {
-                  icon: require('../assets/images/c-salty.png'),
-                  title: 'Snack',
-                },
-              ].map((cat, index) => (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() =>
-                    navigation.navigate('ExploreCategory', {
-                      category: cat.title,
-                    })
-                  }>
-                  <BagdeCategory imageSource={cat.icon} title={cat.title} />
-                </TouchableOpacity>
-              ))}
+              <View style={{padding: 5}}>
+                <Text style={styles.h2_black}>Category</Text>
+              </View>
+
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-evenly',
+                  marginBottom: 20,
+                  marginTop: 15,
+                }}>
+                {[
+                  {
+                    icon: require('../assets/images/c-spicy.png'),
+                    title: 'Spicy',
+                  },
+                  {
+                    icon: require('../assets/images/c-curry.png'),
+                    title: 'Curry',
+                  },
+                  {
+                    icon: require('../assets/images/c-vegie.png'),
+                    title: 'Vegie',
+                  },
+                  {
+                    icon: require('../assets/images/c-salty.png'),
+                    title: 'Salty',
+                  },
+                ].map((category, index) => (
+                  <TouchableOpacity key={index}>
+                    <BagdeCategory
+                      imageSource={category.icon}
+                      title={category.title}
+                    />
+                  </TouchableOpacity>
+                ))}
+              </View>
             </View>
-          </View>
+          )}
 
           <View
             style={{

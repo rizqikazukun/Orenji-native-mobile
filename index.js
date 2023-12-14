@@ -22,6 +22,9 @@ import * as Icons from 'react-native-feather';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ExploreScreen from './src/screen/ExploreScreen';
+import BookmarkScreen from './src/screen/BookmarkScreen';
+import UserProfileAccountSetting from './src/screen/UserProfileAccountSetting';
+import ExploreCategoryScreen from './src/screen/ExploreCategoryScreen';
 
 const theme = {
   ...DefaultTheme,
@@ -99,6 +102,22 @@ function ProfileNav() {
           headerTitleStyle: {fontFamily: 'Montserrat-Bold'},
         }}
       />
+
+      <Stack.Screen
+        name="AccountSetting"
+        component={UserProfileAccountSetting}
+        options={{
+          title: 'Account Setting',
+          headerTitleAlign: 'center',
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: 'white',
+          },
+          cardShadowEnabled: false,
+          headerTintColor: 'black',
+          headerTitleStyle: {fontFamily: 'Montserrat-Bold'},
+        }}
+      />
     </Stack.Navigator>
   );
 }
@@ -116,6 +135,23 @@ function ExploreNav() {
           headerTitleStyle: {fontFamily: 'Montserrat-Bold'},
         }}
       />
+      <Stack.Screen
+        name="ExploreCategory"
+        component={ExploreCategoryScreen}
+        options={{
+          headerTitleAlign: 'center',
+          headerShown: true,
+          headerTitleStyle: {fontFamily: 'Montserrat-Bold'},
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function BookmarkNav() {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="index" component={BookmarkScreen} />
     </Stack.Navigator>
   );
 }
@@ -140,7 +176,7 @@ function TabNavigator() {
         tabBarColor: 'white',
       }}
       backBehavior="order"
-      labeled={false}>
+      labeled={true}>
       <Tab.Screen
         name="Home"
         component={HomeNav}
@@ -153,6 +189,13 @@ function TabNavigator() {
         component={ExploreNav}
         options={{
           tabBarIcon: ({color}) => <Icons.Compass color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Bookmark"
+        component={BookmarkNav}
+        options={{
+          tabBarIcon: ({color}) => <Icons.Bookmark color={color} />,
         }}
       />
       <Tab.Screen

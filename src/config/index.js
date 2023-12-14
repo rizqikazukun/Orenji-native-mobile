@@ -1,5 +1,5 @@
 // https://receipes-web-be-production.up.railway.app
 
 module.exports = {
-  backendUrl: 'http://localhost:3001',
+  backendUrl: 'https://receipes-web-be-production.up.railway.app',
 };
