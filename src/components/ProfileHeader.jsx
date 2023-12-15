@@ -57,7 +57,6 @@ export default function ProfileHeader({text1, text2, photo}) {
     },
   });
 
-  console.log(photo);
   return (
     <View style={styles.headerBody}>
       <View style={styles.headerProfile}>

@@ -2,7 +2,9 @@
 import React from 'react';
 import * as Icons from 'react-native-feather';
 import {StyleSheet, Text, View, TouchableNativeFeedback} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch} from 'react-redux';
+import * as auth from '../redux/slices/auth';
+import {persistor} from '../redux/store';
 
 export default function ProfileLink({
   navigation,
@@ -12,6 +14,8 @@ export default function ProfileLink({
   logout,
   params,
 }) {
+  const dispatch = useDispatch();
+
   const styles = StyleSheet.create({
     outerBody: {
       flexDirection: 'row',
@@ -35,12 +39,10 @@ export default function ProfileLink({
     <TouchableNativeFeedback
       onPress={async () => {
         if (logout) {
-          await AsyncStorage.removeItem('user');
-          await AsyncStorage.removeItem('token');
-          navigation.reset({
-            index: 0,
-            routes: [{name: 'Home'}, {name: 'Profile'}],
-          });
+          persistor.purge();
+          dispatch(auth.setUser(undefined));
+          dispatch(auth.setToken(undefined));
+          navigation.navigate('Profile', {screen: 'index'});
         } else {
           navigation.navigate(navigationLink, params);
         }

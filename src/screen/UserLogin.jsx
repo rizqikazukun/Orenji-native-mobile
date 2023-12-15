@@ -31,10 +31,13 @@ import ProfileHeader from '../components/ProfileHeader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {backendUrl} from '../config';
-import {TabActions} from '@react-navigation/native';
+
+import {useSelector, useDispatch} from 'react-redux';
+import * as auth from '../redux/slices/auth';
 
 export default function UserLogin({navigation}) {
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -46,6 +49,7 @@ export default function UserLogin({navigation}) {
   const signButtonHandler = async () => {
     try {
       setIsLoading(true);
+
       const request = await axios({
         method: 'post',
         url: `${backendUrl}/user/login`,
@@ -55,17 +59,21 @@ export default function UserLogin({navigation}) {
         },
       });
 
-      await AsyncStorage.setItem('token', `Bearer ${request.data.token}`);
-      await AsyncStorage.setItem('user', JSON.stringify(request.data.data));
+      dispatch(auth.setToken(`Bearer ${request.data.token}`));
 
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'Home'}, {name: 'Profile'}],
+      const getDetail = await axios({
+        method: 'get',
+        url: `${backendUrl}/user/profile`,
+        headers: {
+          Authorization: `Bearer ${request.data.token}`,
+        },
       });
-      // console.log(await AsyncStorage.getItem('token'));
-      // console.log(await AsyncStorage.getItem('user'));
+
+      dispatch(auth.setUser(getDetail.data.data));
+
+      navigation.navigate('Profile', {screen: 'index'});
     } catch (err) {
-      // console.log(err.response.data);
+      console.log(err.response.data);
       if (err.response.status === 422) {
         setSnackMessage(String(err.response.data.message));
         setVisible(true);

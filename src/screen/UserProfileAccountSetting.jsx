@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable react-native/no-inline-styles */
 
 import React from 'react';
@@ -9,80 +10,93 @@ import {
   ScrollView,
   Image,
   PermissionsAndroid,
-  Button,
 } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useTheme, TextInput } from 'react-native-paper';
+import {useTheme, TextInput} from 'react-native-paper';
 import axios from 'axios';
-import { backendUrl } from '../config'
+import {backendUrl} from '../config';
+import {useDispatch, useSelector} from 'react-redux';
+import * as auth from '../redux/slices/auth';
 
-export default function UserProfileAccountSetting({ navigation, route }) {
+export default function UserProfileAccountSetting({navigation, route}) {
+  const theme = useTheme();
+  const {user, token} = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
   const [profilePicture, setProfilePicture] = React.useState(undefined);
-  const [first_name, setFname] = React.useState('');
-  const [last_name, setLname] = React.useState('')
-  const [phone_number, setPhonenumber] = React.useState('')
-  const [old_password, setOldpassword] = React.useState('')
-  const [password, setPassword] = React.useState('')
-  const [passwordC, setPasswordc] = React.useState('')
-
-  const theme = useTheme();
-  const { user, token } = route.params;
+  const [first_name, setFname] = React.useState(user.first_name);
+  const [last_name, setLname] = React.useState(user.last_name);
+  const [phone_number, setPhonenumber] = React.useState(user.phone_number);
+  const [old_password, setOldpassword] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [passwordC, setPasswordc] = React.useState('');
 
   const handlerChangePhoto = async () => {
     try {
-      const form = new FormData()
-      form.append('user-photo', profilePicture)
+      const form = new FormData();
+      form.append('user-photo', profilePicture);
 
-      await axios
-        .post(`${backendUrl}/user/profile/update-photo`, form, {
-          headers: {
-            Authorization: token,
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-
-      alert('Photo Profile Updated')
-    } catch (error) {
-      alert(JSON.stringify(error.response.data.message))
-    }
-  }
-
-  const handlerChangeInfo = async () => {
-    try {
-      await axios({
-        method: 'put',
-        url: `${backendUrl}/user/profile/edit`,
-        data: {
-          first_name,
-          last_name,
-          phone_number
-        },
+      await axios.post(`${backendUrl}/user/profile/update-photo`, form, {
         headers: {
-          Authorization: token
-        }
-      })
+          Authorization: token,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-      const getDetailProfile = await axios({
+      const getDetail = await axios({
+        method: 'get',
         url: `${backendUrl}/user/profile`,
         headers: {
           Authorization: token,
         },
       });
 
-      await AsyncStorage.setItem('user', JSON.stringify({ ...user, ...getDetailProfile.data.data }))
-      alert('Success, Info Updated')
+      dispatch(auth.setUser(getDetail.data.data));
+
+      alert('Photo Profile Updated');
     } catch (error) {
-      alert(JSON.stringify(error.response.data.message))
+      alert(JSON.stringify(error.response.data.message));
     }
-  }
+  };
+
+  const handlerChangeInfo = async () => {
+    try {
+      console.log(token);
+
+      await axios({
+        method: 'put',
+        url: `${backendUrl}/user/profile/edit`,
+        data: {
+          first_name,
+          last_name,
+          phone_number,
+        },
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      const getDetail = await axios({
+        method: 'get',
+        url: `${backendUrl}/user/profile`,
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      dispatch(auth.setUser(getDetail.data.data));
+
+      alert('Success, Info Updated');
+    } catch (error) {
+      alert(JSON.stringify(error.response.data.message));
+    }
+  };
 
   const handlerChangePassword = async () => {
     try {
       if (password !== passwordC) {
-        alert('Confirmation Password is not match')
-        return
+        alert('Confirmation Password is not match');
+        return;
       }
 
       await axios({
@@ -90,18 +104,18 @@ export default function UserProfileAccountSetting({ navigation, route }) {
         url: `${backendUrl}/user/profile/update-password-new`,
         data: {
           old_password,
-          password
+          password,
         },
         headers: {
-          Authorization: token
-        }
-      })
+          Authorization: token,
+        },
+      });
 
-      alert('Success, Password Updated')
+      alert('Success, Password Updated');
     } catch (error) {
-      alert(JSON.stringify(error.response.data.message))
+      alert(JSON.stringify(error.response.data.message));
     }
-  }
+  };
 
   const photoPicker = async () => {
     try {
@@ -116,7 +130,7 @@ export default function UserProfileAccountSetting({ navigation, route }) {
 
   const requestPermission = async () => {
     try {
-      const status = await PermissionsAndroid.request(
+      await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
       );
     } catch (error) {
@@ -163,7 +177,7 @@ export default function UserProfileAccountSetting({ navigation, route }) {
   };
 
   return (
-    <SafeAreaView style={{ flexGrow: 1 }}>
+    <SafeAreaView style={{flexGrow: 1}}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View id="change-photo" style={styles.cards}>
           <Text style={styles.cardTitle}>Change Photo</Text>
@@ -174,14 +188,14 @@ export default function UserProfileAccountSetting({ navigation, route }) {
               uri: profilePicture
                 ? profilePicture?.uri
                 : user
-                  ? user?.photo_profile
-                  : 'https://res.cloudinary.com/dwptyupfa/image/upload/v1702351028/default/qypd8uufip0no3st2ukx.jpg',
+                ? user?.photo_profile
+                : 'https://res.cloudinary.com/dwptyupfa/image/upload/v1702351028/default/qypd8uufip0no3st2ukx.jpg',
             }}
             style={{
               borderRadius: 150,
             }}
           />
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{flexDirection: 'row'}}>
             <TouchableOpacity onPress={photoPicker}>
               <View
                 style={{
@@ -213,13 +227,13 @@ export default function UserProfileAccountSetting({ navigation, route }) {
           <TextInput
             mode="outlined"
             label="First Name"
-            defaultValue={user.first_name}
+            defaultValue={user?.first_name}
             onChangeText={text => setFname(text)}
             outlineColor="gray"
             inputMode="text"
             theme={{
               roundness: 36,
-              fonts: { regular: { fontFamily: 'Lato-Regular' } },
+              fonts: {regular: {fontFamily: 'Lato-Regular'}},
             }}
             style={{
               backgroundColor: theme.colors.gray5,
@@ -231,13 +245,13 @@ export default function UserProfileAccountSetting({ navigation, route }) {
           <TextInput
             mode="outlined"
             label="Last Name"
-            defaultValue={user.last_name}
+            defaultValue={user?.last_name}
             onChangeText={text => setLname(text)}
             outlineColor="gray"
             inputMode="text"
             theme={{
               roundness: 36,
-              fonts: { regular: { fontFamily: 'Lato-Regular' } },
+              fonts: {regular: {fontFamily: 'Lato-Regular'}},
             }}
             style={{
               backgroundColor: theme.colors.gray5,
@@ -249,13 +263,13 @@ export default function UserProfileAccountSetting({ navigation, route }) {
           <TextInput
             mode="outlined"
             label="Phone Number"
-            defaultValue={user.phone_number}
+            defaultValue={user?.phone_number}
             onChangeText={text => setPhonenumber(text)}
             outlineColor="gray"
             inputMode="numeric"
             theme={{
               roundness: 36,
-              fonts: { regular: { fontFamily: 'Lato-Regular' } },
+              fonts: {regular: {fontFamily: 'Lato-Regular'}},
             }}
             style={{
               backgroundColor: theme.colors.gray5,
@@ -289,7 +303,7 @@ export default function UserProfileAccountSetting({ navigation, route }) {
             label="Old Passwors"
             secureTextEntry
             outlineColor="gray"
-            theme={{ roundness: 36 }}
+            theme={{roundness: 36}}
             left={<TextInput.Icon icon="form-textbox-password" color="gray" />}
             style={{
               backgroundColor: theme.colors.gray5,
@@ -304,7 +318,7 @@ export default function UserProfileAccountSetting({ navigation, route }) {
             label="Password"
             secureTextEntry
             outlineColor="gray"
-            theme={{ roundness: 36 }}
+            theme={{roundness: 36}}
             left={<TextInput.Icon icon="form-textbox-password" color="gray" />}
             style={{
               backgroundColor: theme.colors.gray5,
@@ -319,7 +333,7 @@ export default function UserProfileAccountSetting({ navigation, route }) {
             label="Confirm Password"
             secureTextEntry
             outlineColor="gray"
-            theme={{ roundness: 36 }}
+            theme={{roundness: 36}}
             left={<TextInput.Icon icon="form-textbox-password" color="gray" />}
             style={{
               backgroundColor: theme.colors.gray5,
@@ -338,29 +352,6 @@ export default function UserProfileAccountSetting({ navigation, route }) {
               <Text style={styles.submitButton}>Submit</Text>
             </View>
           </TouchableOpacity>
-        </View>
-
-        <View id="change-photo" style={{...styles.cards, flexDirection: 'column'}}>
-          <Text style={{flexShrink: 1, textAlign: 'center'}}>
-            Sorry, Application is under development, some change may not change real time.
-            If you have been made a changes, please press refresh button.
-          </Text>
-          <TouchableOpacity onPress={() => {
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'Profile'}],
-            });
-          }}>
-            <View
-              style={{
-                padding: 10,
-                borderRadius: 20,
-                backgroundColor: theme.colors.OjenjiMid,
-              }}>
-              <Text style={styles.submitButton}>Refresh</Text>
-            </View>
-          </TouchableOpacity>
-
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -10,63 +10,17 @@
 import React from 'react';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useTheme} from 'react-native-paper';
-import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  Dimensions,
-  useWindowDimensions,
-  ImageBackground,
-  Image,
-  TouchableNativeFeedback,
-  TouchableWithoutFeedback,
-} from 'react-native';
-import BottomNavbar from '../components/BottomNavbar';
+import {ScrollView, StatusBar, StyleSheet, View} from 'react-native';
 import * as Icons from 'react-native-feather';
 import ProfileLink from '../components/ProfileLink';
 import ProfileHeader from '../components/ProfileHeader';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import {backendUrl} from '../config';
+import {useSelector} from 'react-redux';
 
 export default function UserProfile({navigation, route}) {
   const theme = useTheme();
+  const {user, token} = useSelector(state => state.auth);
 
-  const [user, setUser] = React.useState(undefined);
-  const [token, setToken] = React.useState(undefined);
-
-  const checkAuth = async () => {
-    try {
-      // console.log('loading');
-      const getUser = await AsyncStorage.getItem('user');
-      const getToken = await AsyncStorage.getItem('token');
-
-      if (getUser && getToken) {
-        const getDetailProfile = await axios({
-          url: `${backendUrl}/user/profile`,
-          headers: {
-            Authorization: getToken,
-          },
-        });
-
-        if (getDetailProfile.data.status === 200) {
-          setUser({...JSON.parse(getUser), ...getDetailProfile.data.data});
-          setToken(getToken);
-        }
-      }
-    } catch (error) {
-      //
-    } finally {
-      // console.log('finish');
-    }
-  };
-
-  React.useEffect(() => {
-    checkAuth();
-  }, []);
+  React.useEffect(() => {}, []);
 
   const styles = StyleSheet.create({
     LinkBody: {
@@ -89,7 +43,7 @@ export default function UserProfile({navigation, route}) {
         {!(user === undefined && token === undefined) ? (
           <>
             <ProfileHeader
-              text1={`Hi, ${user.first_name}`}
+              text1={`Hi, ${user?.first_name}`}
               text2="Have a Day!"
               photo={user?.photo_profile}
             />
@@ -98,7 +52,6 @@ export default function UserProfile({navigation, route}) {
                 title="Account Setting"
                 navigation={navigation}
                 navigationLink="AccountSetting"
-                params={{user, token}}
                 icon={<Icons.Settings color="black" height={18} width={18} />}
               />
               <ProfileLink
