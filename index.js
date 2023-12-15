@@ -15,7 +15,6 @@ import UserLogin from './src/screen/UserLogin';
 import UserRegister from './src/screen/UserRegister';
 
 import {NavigationContainer} from '@react-navigation/native';
-// import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import * as Icons from 'react-native-feather';
@@ -153,7 +152,7 @@ function ExploreNav() {
   );
 }
 
-function BookmarkNav() {
+function BookNav() {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="index" component={BookmarkScreen} />
@@ -180,7 +179,7 @@ function TabNavigator() {
         tabBarShowLabel: false,
         tabBarColor: 'white',
       }}
-      backBehavior="order"
+      backBehavior="history"
       labeled={true}>
       <Tab.Screen
         name="Home"
@@ -197,10 +196,10 @@ function TabNavigator() {
         }}
       />
       <Tab.Screen
-        name="Bookmark"
-        component={BookmarkNav}
+        name="MyOrenji"
+        component={BookNav}
         options={{
-          tabBarIcon: ({color}) => <Icons.Bookmark color={color} />,
+          tabBarIcon: ({color}) => <Icons.BookOpen color={color} />,
         }}
       />
       <Tab.Screen

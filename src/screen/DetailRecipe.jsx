@@ -30,7 +30,6 @@ import {
   ActivityIndicator,
   Linking,
 } from 'react-native';
-import BottomNavbar from '../components/BottomNavbar';
 import axios from 'axios';
 import {backendUrl} from '../config';
 import UserComment from '../components/UserComment';

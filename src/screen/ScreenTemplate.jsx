@@ -1,52 +1,27 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable prettier/prettier */
-/* eslint-disable no-unused-vars */
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Searchbar, useTheme } from 'react-native-paper';
-import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  Dimensions,
-  useWindowDimensions,
-  ImageBackground,
-  Image,
-} from 'react-native';
-import BottomNavbar from '../components/BottomNavbar';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {ScrollView, View, Text, StyleSheet} from 'react-native';
+import {useTheme} from 'react-native-paper';
+import {useSelector} from 'react-redux';
+import * as Icons from 'react-native-feather';
+import {useNavigation} from '@react-navigation/native';
 
-
-
-export default function ScreenTemplate({ navigation, route }) {
-  const [search, setSearch] = React.useState('');
+export default function BookmarkScreen() {
   const theme = useTheme();
-  const { height, width, scale, fontScale } = useWindowDimensions();
-  const { image, title } = route.params;
+  const {user, token} = useSelector(state => state.auth);
+  const navigation = useNavigation();
 
-  React.useEffect(() => { }, []);
-
-  const inset = useSafeAreaInsets();
+  React.useEffect(() => {}, []);
   const styles = StyleSheet.create({});
 
   return (
-    <SafeAreaView edges={['top', 'right', 'bottom', 'left']} style={{ height: height - 30 }}>
-      <StatusBar backgroundColor={theme.colors.OjenjiMid} />
-      <View>
-        <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: 64 }}>
-          <Text>Hello</Text>
-        </ScrollView>
-      </View>
-      <BottomNavbar navigation={navigation} />
+    <SafeAreaView style={{flexGrow: 1}}>
+      <ScrollView>
+        <View id="BookmarkScreen">
+          <Text>Hello World</Text>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
