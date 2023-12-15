@@ -26,6 +26,10 @@ import BookmarkScreen from './src/screen/BookmarkScreen';
 import UserProfileAccountSetting from './src/screen/UserProfileAccountSetting';
 import ExploreCategoryScreen from './src/screen/ExploreCategoryScreen';
 
+import {store, persistor} from './src/redux/store';
+import {Provider as StoreProvider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+
 const theme = {
   ...DefaultTheme,
   version: 2,
@@ -275,9 +279,13 @@ export default function Main() {
 
   return (
     <NavigationContainer>
-      <PaperProvider theme={theme}>
-        <TabNavigator />
-      </PaperProvider>
+      <StoreProvider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <PaperProvider theme={theme}>
+            <TabNavigator />
+          </PaperProvider>
+        </PersistGate>
+      </StoreProvider>
     </NavigationContainer>
   );
 }
