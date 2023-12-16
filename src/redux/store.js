@@ -1,5 +1,7 @@
 import {configureStore} from '@reduxjs/toolkit';
 import authSlice from './slices/auth';
+import myOrenji from './slices/my-orenji';
+
 import {
   persistStore,
   persistReducer,
@@ -12,7 +14,7 @@ import {
 } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const persistedReducer = persistReducer(
+const authSliceReducer = persistReducer(
   {
     key: 'root',
     storage: AsyncStorage,
@@ -22,9 +24,20 @@ const persistedReducer = persistReducer(
   authSlice,
 );
 
+const myOrejiSliceReducer = persistReducer(
+  {
+    key: 'r',
+    storage: AsyncStorage,
+    blacklist: [''],
+    whitelist: ['created'],
+  },
+  myOrenji,
+);
+
 export const store = configureStore({
   reducer: {
-    auth: persistedReducer,
+    auth: authSliceReducer,
+    book: myOrejiSliceReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
@@ -33,4 +46,5 @@ export const store = configureStore({
       },
     }),
 });
+
 export const persistor = persistStore(store);
