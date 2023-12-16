@@ -5,25 +5,26 @@
  */
 
 import {AppRegistry, Alert, PermissionsAndroid} from 'react-native';
-import HomeScreen from './src/screen/HomeScreen';
 import {name as appName} from './app.json';
 import * as React from 'react';
 import {MD3LightTheme as DefaultTheme, PaperProvider} from 'react-native-paper';
-import DetailRecipe from './src/screen/DetailRecipe';
-import UserProfile from './src/screen/UserProfile';
-import UserLogin from './src/screen/UserLogin';
-import UserRegister from './src/screen/UserRegister';
-
 import {NavigationContainer} from '@react-navigation/native';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import * as Icons from 'react-native-feather';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import HomeScreen from './src/screen/HomeScreen';
 import ExploreScreen from './src/screen/ExploreScreen';
 import BookmarkScreen from './src/screen/BookmarkScreen';
 import UserProfileAccountSetting from './src/screen/UserProfileAccountSetting';
 import ExploreCategoryScreen from './src/screen/ExploreCategoryScreen';
+import DetailRecipe from './src/screen/DetailRecipe';
+import UserProfile from './src/screen/UserProfile';
+import UserLogin from './src/screen/UserLogin';
+import UserRegister from './src/screen/UserRegister';
+import AboutAppScreen from './src/screen/AboutAppScreen';
 
 import {store, persistor} from './src/redux/store';
 import {Provider as StoreProvider} from 'react-redux';
@@ -118,6 +119,22 @@ function ProfileNav() {
           },
           cardShadowEnabled: false,
           headerTintColor: 'black',
+          headerTitleStyle: {fontFamily: 'Montserrat-Bold'},
+        }}
+      />
+
+      <Stack.Screen
+        name="about"
+        component={AboutAppScreen}
+        options={{
+          title: 'About App',
+          headerTitleAlign: 'center',
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.colors.OjenjiMid,
+          },
+          cardShadowEnabled: false,
+          headerTintColor: 'white',
           headerTitleStyle: {fontFamily: 'Montserrat-Bold'},
         }}
       />

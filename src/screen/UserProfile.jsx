@@ -30,6 +30,7 @@ export default function UserProfile({navigation, route}) {
       borderTopLeftRadius: 32,
       borderTopRightRadius: 32,
       flexDirection: 'column',
+      flexGrow: 1,
     },
   });
 
@@ -85,10 +86,23 @@ export default function UserProfile({navigation, route}) {
             </View>
           </>
         )}
-        {/* Login */}
-        {/* <View style={styles.profileLinkBody}>
-            <Text>Not Login</Text>
-          </View> */}
+        <View
+          style={{
+            backgroundColor: 'white',
+            marginTop: 0,
+            margin: 24,
+            paddingVertical: 20,
+            borderTopColor: theme.colors.gray15,
+            borderTopWidth: 2,
+            flexDirection: 'column',
+          }}>
+          <ProfileLink
+            title="About Application"
+            navigation={navigation}
+            navigationLink="about"
+            icon={<Icons.Info color="black" height={18} width={18} />}
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
