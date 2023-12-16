@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable no-alert */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
@@ -130,7 +131,7 @@ export default function BookmarkScreen() {
 
   const initialize = async () => {
     try {
-      const recipe = await axios({
+      const created = await axios({
         method: 'get',
         url: `${backendUrl}/recipes/getmyrecipe`,
         headers: {
@@ -138,7 +139,16 @@ export default function BookmarkScreen() {
         },
       });
 
-      dispatch(book.addCreatedByApi(recipe.data.data));
+      const saved = await axios({
+        method: 'get',
+        url: `${backendUrl}/recipes/getmybookmark`,
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      dispatch(book.addCreatedByApi(created.data.data));
+      dispatch(book.addSavedByApi(saved.data.data));
     } catch (error) {
       console.log(error.response.data);
     } finally {
