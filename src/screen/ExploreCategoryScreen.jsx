@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-unused-vars */
@@ -33,6 +34,9 @@ import * as Icons from 'react-native-feather';
 import SelectDropdown from 'react-native-select-dropdown';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import BagdeCategory from '../components/BagdeCategory';
+import {useSelector, useDispatch} from 'react-redux';
+import * as book from '../redux/slices/my-orenji';
+import SearchItemHorizontalCard from '../components/cards/SearchItemHorizontalCard';
 
 export default function ExploreCategoryScreen({navigation, route}) {
   const [search, setSearch] = React.useState('');
@@ -40,6 +44,8 @@ export default function ExploreCategoryScreen({navigation, route}) {
   const [setting, setSetting] = React.useState(false);
   const theme = useTheme();
   const {height, width, scale, fontScale} = useWindowDimensions();
+  const {token} = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
   const [loading, setLoading] = React.useState(false);
 
@@ -101,6 +107,37 @@ export default function ExploreCategoryScreen({navigation, route}) {
       width: 200,
     },
   });
+
+  const handleSaveRecipe = async recipes_uid => {
+    try {
+      await axios({
+        method: 'post',
+        url: `${backendUrl}/recipes/bookmark`,
+        data: {
+          recipes_uid,
+        },
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      const savedRecipe = await axios({
+        method: 'get',
+        url: `${backendUrl}/recipes/getmybookmark`,
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      dispatch(book.addSavedByApi(savedRecipe.data.data));
+      alert('Recipe Saved');
+    } catch (error) {
+      if (error) {
+        console.log(error.response.data);
+        alert('To save recipe please login first');
+      }
+    }
+  };
 
   const handleSearch = async () => {
     try {
@@ -321,55 +358,18 @@ export default function ExploreCategoryScreen({navigation, route}) {
             }}>
             {searchResult?.map((recipe, index) => {
               return (
-                <TouchableNativeFeedback
+                <SearchItemHorizontalCard
                   key={index}
-                  onPress={() => navigation.navigate('Detail Recipe', recipe)}>
-                  <View
-                    style={{
-                      padding: 10,
-                      width: '100%',
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-
-                      borderRadius: 14,
-                      backgroundColor: 'white',
-                      marginVertical: 4,
-
-                      shadowColor: '#000',
-                      shadowOffset: {
-                        width: 0,
-                        height: 1,
-                      },
-                      shadowOpacity: 0.2,
-                      shadowRadius: 1.41,
-
-                      elevation: 2,
-                    }}>
-                    <View
-                      style={{
-                        flexShrink: 1,
-                        padding: 3,
-                      }}>
-                      <Text
-                        style={{
-                          fontFamily: 'Montserrat-Bold',
-                          color: 'black',
-                          fontSize: 18,
-                        }}>
-                        {recipe.title}
-                      </Text>
-                      <Text style={{fontFamily: 'Lato-Regular'}}>
-                        {String(recipe.sort_desc).slice(0, 100)}
-                      </Text>
-                    </View>
-                    <Image
-                      height={100}
-                      width={100}
-                      style={{borderRadius: 8}}
-                      source={{uri: recipe.image}}
-                    />
-                  </View>
-                </TouchableNativeFeedback>
+                  title={recipe.title}
+                  image={recipe.image}
+                  description={recipe.sort_desc}
+                  buttonLink={() => {
+                    navigation.navigate('Detail Recipe', recipe);
+                  }}
+                  buttonLike={() => {
+                    handleSaveRecipe(recipe.recipes_uid);
+                  }}
+                />
               );
             })}
 

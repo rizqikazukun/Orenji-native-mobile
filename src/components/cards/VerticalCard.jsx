@@ -7,8 +7,10 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
+import * as Icons from 'react-native-feather';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-export default function VerticalCard({title, image, onPress}) {
+export default function VerticalCard({title, image, onPress, deleteButton}) {
   const styles = StyleSheet.create({
     recipeCard: {
       alignItems: 'center',
@@ -36,21 +38,44 @@ export default function VerticalCard({title, image, onPress}) {
     : 'https://res.cloudinary.com/dwptyupfa/image/upload/v1702645947/default/qucddjwnmfccdo1wo0jn.jpg';
 
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View style={styles.recipeCard}>
-        <Image
-          width={90}
-          height={100}
-          style={{borderRadius: 10}}
-          source={{uri}}
-        />
-        <View style={{padding: 4}}>
-          <Text
-            style={{color: 'black', fontSize: 12, fontFamily: 'Lato-Regular'}}>
-            {title}
-          </Text>
+    <View>
+      <TouchableWithoutFeedback onPress={onPress}>
+        <View style={styles.recipeCard}>
+          <Image
+            width={90}
+            height={100}
+            style={{borderRadius: 10}}
+            source={{uri}}
+          />
+          <View style={{padding: 4}}>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 12,
+                fontFamily: 'Lato-Regular',
+              }}>
+              {title}
+            </Text>
+          </View>
         </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+      {!deleteButton ? null : (
+        <TouchableOpacity onPress={deleteButton}>
+          <View
+            style={{
+              flexDirection: 'row',
+              padding: 2,
+              margin: 6,
+              backgroundColor: '#b00000',
+              borderRadius: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={{color: 'white'}}>Delete</Text>
+            <Icons.Trash height={14} width={14} color={'white'} />
+          </View>
+        </TouchableOpacity>
+      )}
+    </View>
   );
 }

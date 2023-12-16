@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
@@ -11,27 +12,22 @@ import {
   TouchableNativeFeedback,
 } from 'react-native';
 import {useTheme} from 'react-native-paper';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import * as Icons from 'react-native-feather';
 import VerticalCard from '../components/cards/VerticalCard';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {backendUrl} from '../config';
+import * as book from '../redux/slices/my-orenji';
 
 export default function BookmarkScreen() {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const {user, token} = useSelector(state => state.auth);
+  const {created, saved} = useSelector(state => state.book);
   const login = user && token;
   const navigation = useNavigation();
 
-  const [myRecipe, setMyRecipe] = React.useState([]);
-
-  React.useEffect(() => {
-    if (login) {
-      console.log('zzz');
-      initialize();
-    }
-  }, [login]);
   const styles = StyleSheet.create({
     header: {
       height: 300,
@@ -142,13 +138,47 @@ export default function BookmarkScreen() {
         },
       });
 
-      setMyRecipe(recipe.data.data);
+      dispatch(book.addCreatedByApi(recipe.data.data));
     } catch (error) {
       console.log(error.response.data);
     } finally {
       // setLoading(false);
     }
   };
+
+  const handlerDeleteSavedRecipe = async recipes_uid => {
+    try {
+      await axios({
+        method: 'delete',
+        url: `${backendUrl}/recipes/unbookmark`,
+        data: {
+          recipes_uid,
+        },
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      const recipeIndex = saved.findIndex(item => {
+        return item.recipes_uid === recipes_uid;
+      });
+
+      const data = [...saved];
+      data.splice(recipeIndex, 1);
+
+      dispatch(book.addSavedByApi(data));
+      alert('Saved Recipe Deleted');
+    } catch (error) {
+      console.log(error);
+      alert(error?.response?.data);
+    }
+  };
+
+  React.useEffect(() => {
+    if (login) {
+      initialize();
+    }
+  }, [login]);
 
   return (
     <SafeAreaView style={{flexGrow: 1}}>
@@ -206,29 +236,32 @@ export default function BookmarkScreen() {
             <Icons.BookOpen color={'black'} />
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {!login
-              ? null
-              : myRecipe?.map((recipe, index) => {
-                  return (
-                    <VerticalCard
-                      key={index}
-                      title={String(recipe.title).slice(0, 21)}
-                      image={recipe.image}
-                      onPress={() => {
-                        navigation.navigate('Explore', {
-                          screen: 'Detail Recipe',
-                          params: recipe,
-                          initial: false,
-                        });
-                      }}
-                    />
-                  );
-                })}
+            {!login ? null : created.length === 0 ? (
+              <Text style={{width: 200, textAlign: 'center'}}>
+                You haven't created any recipes yet
+              </Text>
+            ) : (
+              created?.map((recipe, index) => {
+                return (
+                  <VerticalCard
+                    key={index}
+                    title={String(recipe.title).slice(0, 21)}
+                    image={recipe.image}
+                    onPress={() => {
+                      navigation.navigate('Explore', {
+                        screen: 'Detail Recipe',
+                        params: recipe,
+                        initial: false,
+                      });
+                    }}
+                  />
+                );
+              })
+            )}
 
             {login ? null : (
               <Text style={{width: 200, textAlign: 'center'}}>
-                {' '}
-                "It's great to create recipe here, but you must login first"{' '}
+                To save a recipe you must log in first
               </Text>
             )}
           </ScrollView>
@@ -240,9 +273,37 @@ export default function BookmarkScreen() {
             <Icons.Bookmark color={'black'} />
           </View>
           <ScrollView horizontal>
-            <Text style={{width: 200, textAlign: 'center'}}>
-              Saved recipe will show here. The feature is coming soon
-            </Text>
+            {!login ? null : saved.length === 0 ? (
+              <Text style={{width: 200, textAlign: 'center'}}>
+                You haven't saved any recipes
+              </Text>
+            ) : (
+              saved?.map((recipe, index) => {
+                return (
+                  <VerticalCard
+                    key={index}
+                    title={String(recipe.title).slice(0, 21)}
+                    image={recipe.image}
+                    deleteButton={() => {
+                      handlerDeleteSavedRecipe(recipe.recipes_uid);
+                    }}
+                    onPress={() => {
+                      navigation.navigate('Explore', {
+                        screen: 'Detail Recipe',
+                        params: recipe,
+                        initial: false,
+                      });
+                    }}
+                  />
+                );
+              })
+            )}
+
+            {login ? null : (
+              <Text style={{width: 200, textAlign: 'center'}}>
+                Saved recipe will show here, but you must login first
+              </Text>
+            )}
           </ScrollView>
         </View>
 
