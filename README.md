@@ -5,7 +5,10 @@
 Halo selamat datang di repo project ini, project ini adalah versi mobole dari web mama recipe, Mama Recipe adalah website untuk melihat, membuat, dan membagikan resep. ada juga resep yang disediakan oleh saya selaku developernya hehe, meskipun begitu resep dijamin valid, ragu? boleh dicoba.
 
 Developer : Rizqi Pratama  
-Versi Web : <https://recipes-web-fe.vercel.app>
+Versi Web : <https://recipes-web-fe.vercel.app>  
+Debug APK : <https://github.com/rizqikazukun/orenji-native-mobile/releases/tag/debug-preview>
+
+> Note : versi apk merupakan versi release debug, kemungkinan tidak akan terinstall di beberapa perangkat atau butuh mengijinkan settingan menginstall aplikasi dari luar playstore.
 
 ## How to run & Build
 
@@ -30,3 +33,5 @@ Versi Web : <https://recipes-web-fe.vercel.app>
    ```
 
 ## Screenshoot
+
+![overview](./docs/pictures/githubss.png)
