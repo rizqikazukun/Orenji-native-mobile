@@ -9,6 +9,11 @@ Versi Web : <https://recipes-web-fe.vercel.app>
 Debug APK : <https://github.com/rizqikazukun/orenji-native-mobile/releases/tag/debug-preview>
 
 > Note : versi apk merupakan versi release debug, kemungkinan tidak akan terinstall di beberapa perangkat atau butuh mengijinkan settingan menginstall aplikasi dari luar playstore.
+>
+
+## Screenshoot
+
+![overview](./docs/pictures/githubss.png)
 
 ## How to run & Build
 
@@ -31,7 +36,3 @@ Debug APK : <https://github.com/rizqikazukun/orenji-native-mobile/releases/tag/d
    yarn start     # run with this command after then follow 
                   # instruction that appear on the terminal
    ```
-
-## Screenshoot
-
-![overview](./docs/pictures/githubss.png)
