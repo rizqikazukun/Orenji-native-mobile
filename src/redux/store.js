@@ -16,7 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const authSliceReducer = persistReducer(
   {
-    key: 'root',
+    key: 'auth',
     storage: AsyncStorage,
     blacklist: [''],
     whitelist: ['token', 'user'],
@@ -26,10 +26,10 @@ const authSliceReducer = persistReducer(
 
 const myOrejiSliceReducer = persistReducer(
   {
-    key: 'r',
+    key: 'book',
     storage: AsyncStorage,
     blacklist: [''],
-    whitelist: ['created'],
+    whitelist: ['created', 'saved', 'liked'],
   },
   myOrenji,
 );
