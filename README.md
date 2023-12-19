@@ -2,9 +2,10 @@
 
 ![logo](./docs/pictures/logo-w-slogan.png)  
 
-Halo selamat datang di repo project ini, project ini adalah versi mobole dari web mama recipe, Mama Recipe adalah website untuk melihat, membuat, dan membagikan resep. ada juga resep yang disediakan oleh saya selaku developernya hehe, meskipun begitu resep dijamin valid, ragu? boleh dicoba.
+Halo selamat datang di repo project ini, project ini adalah versi mobile dari web mama recipe, Mama Recipe adalah website untuk melihat, membuat, dan membagikan resep. ada juga resep yang disediakan oleh saya selaku developernya hehe, meskipun begitu resep dijamin valid, ragu? boleh dicoba.
 
 Developer : Rizqi Pratama  
+Tech Stack : Javascript, React Native, React Native Navigation, Firebase Cloud Messaging (Client), Redux  
 Versi Web : <https://recipes-web-fe.vercel.app>  
 Debug APK : <https://github.com/rizqikazukun/orenji-native-mobile/releases/tag/debug-preview>
 
