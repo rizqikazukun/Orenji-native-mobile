@@ -230,6 +230,8 @@ export default function ExploreScreen({navigation}) {
 
             <View style={{flexDirection: 'row'}}>
               <Searchbar
+                autoFocus={true}
+                showSoftInputOnFocus={true}
                 iconColor={theme.colors.gray20}
                 placeholderTextColor={theme.colors.gray20}
                 placeholder="Search Pasta, Bread, etc"

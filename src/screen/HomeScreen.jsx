@@ -32,6 +32,7 @@ import HeatCard from '../components/cards/HeatCard';
 import PopularCard from '../components/cards/PopularCard';
 import axios from 'axios';
 import {backendUrl} from '../config';
+import * as Icons from 'react-native-feather';
 
 export default function HomeScreen({navigation}) {
   const [search, setSearch] = React.useState('');
@@ -78,6 +79,16 @@ export default function HomeScreen({navigation}) {
     sub_h2: {
       color: theme.colors.gray40,
       fontFamily: 'Lato-Italic',
+    },
+    homeSearch: {
+      padding: 15,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: 10,
+      backgroundColor: 'white',
+      borderRadius: 10,
+      margin: 4,
     },
   });
 
@@ -137,19 +148,17 @@ export default function HomeScreen({navigation}) {
               source={require('../assets/images/logo-w-slogan.png')}
             />
 
-            <View style={styles.searchbar}>
-              <Searchbar
-                // onSubmitEditing={navigation.navigate('Explore')}
-                iconColor={theme.colors.gray20}
-                placeholderTextColor={theme.colors.gray20}
-                placeholder="Search Pasta, Bread, etc"
-                onChangeText={query => setSearch(query)}
-                allowFontScaling={true}
-                inputStyle={{fontFamily: 'Lato-Regular', fontSize: 14}}
-                style={{backgroundColor: '#fff', borderRadius: 14}}
-                onSubmitEditing={() => navigation.navigate('Explore', {search})}
-              />
-            </View>
+            <TouchableWithoutFeedback
+              onPressIn={() => {
+                navigation.navigate('Explore');
+              }}>
+              <View style={styles.homeSearch}>
+                <Icons.Search color={'gray'} />
+                <Text style={{fontFamily: 'Lato-Regular', fontSize: 14}}>
+                  Search Pasta, Bread, etc
+                </Text>
+              </View>
+            </TouchableWithoutFeedback>
           </ImageBackground>
 
           {/* Popular Section */}
