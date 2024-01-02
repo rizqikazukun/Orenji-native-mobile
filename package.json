@@ -1,6 +1,6 @@
 {
   "name": "orenji",
-  "version": "0.0.1",
+  "version": "1.0.2",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -8,6 +8,9 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
+    "bump-patch": "npm version patch --no-git-tag-version && bundle exec fastlane bump",
+    "bump-minor": "npm version minor --no-git-tag-version && bundle exec fastlane bump",
+    "bump-major": "npm version major --no-git-tag-version && bundle exec fastlane bump",
     "built-debug": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd ./android && ./gradlew assembleDebug && cd .."
   },
   "dependencies": {
